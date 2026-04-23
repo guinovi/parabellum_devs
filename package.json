@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "express": "^5.2.1"
+
+  },
+  "type": "module",
+  "name": "parabellum_devs",
+  "version": "0.0.1",
+  "description": "software para panaderias",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
