@@ -1,7 +1,6 @@
 
 
 const getProductos = (req, res) => {
-    // res.json(PRODUCTOS);
 }
 
 
