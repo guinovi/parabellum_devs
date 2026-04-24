@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "nombre": "Pan Integral",
+    "precio": 3.50
+  },
+  {
+    "id": 2,
+    "nombre": "Baguette Francesa",
+    "precio": 4.00
+  },
+  {
+    "id": 3,
+    "nombre": "Croissant",
+    "precio": 2.75
+  },
+  {
+    "id": 4,
+    "nombre": "Donut con Chocolate",
+    "precio": 1.50
+  },
+  {
+    "id": 5,
+    "nombre": "Pan de Avena",
+    "precio": 3.25
+  },
+  {
+    "id": 6,
+    "nombre": "Pastel de Queso",
+    "precio": 5.00
+  },
+  {
+    "id": 7,
+    "nombre": "Pan Tostado",
+    "precio": 2.50
+  },
+  {
+    "id": 8,
+    "nombre": "Empanada de Carne",
+    "precio": 3.00
+  },
+  {
+    "id": 9,
+    "nombre": "Medialuna",
+    "precio": 1.75
+  },
+  {
+    "id": 10,
+    "nombre": "Pan de Chocolate",
+    "precio": 2.00
+  }
+]
