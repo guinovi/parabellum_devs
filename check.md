@@ -1,8 +1,5 @@
 Este es el checklist técnico basado estrictamente en los requerimientos de tu entrega. Usalo para dividir y asignar las tareas. 
 
-[cite_start]Hay un detalle técnico que tenés que resolver con tu equipo: el requerimiento pide explícitamente responder en formato JSON con códigos HTTP[cite: 85], pero a la vez exige implementar renderizado con Pug. [cite_start]La solución óptima y más limpia para no mezclar responsabilidades en MVC es tener controladores separados: una ruta de API pura (ej. `/api/pedidos`) que devuelva JSON para cumplir con la arquitectura y usar Thunder Client [cite: 154][cite_start], y otra ruta para las vistas (ej. `/pedidos`) que consuma esos datos y renderice el HTML con Pug[cite: 157].
-
-A continuación, la lista de tareas.
 
 ### Fase 1: Arquitectura y Configuración Base
 - [ ] [cite_start]**Estructura del Proyecto:** Crear la estructura de carpetas respetando el patrón MVC (Modelos, Controladores, Rutas, Servicios)[cite: 85].
