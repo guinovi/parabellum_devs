@@ -2,7 +2,7 @@ Este es el checklist técnico basado estrictamente en los requerimientos de tu e
 
 
 ### Fase 1: Arquitectura y Configuración Base
-- [ ] [cite_start]**Estructura del Proyecto:** Crear la estructura de carpetas respetando el patrón MVC (Modelos, Controladores, Rutas, Servicios)[cite: 85].
+- [ ] [cite_start]**Estructura del Proyecto:** Crear la estructura de carpetas respetando el patrón MVC (models, controllers, routes, data, views)[cite: 85].
 - [ ] [cite_start]**Separación Modular:** Asegurar que cada CRUD tenga sus propios archivos de rutas, controladores y modelos independientes[cite: 39].
 - [ ] [cite_start]**Persistencia de Datos (JSON):** Configurar el almacenamiento en memoria utilizando archivos `.json` ubicados dentro de una carpeta `/data/`[cite: 151].
 - [ ] **Dependencias:** Instalar Express y configurar Pug como motor de plantillas.
@@ -37,3 +37,5 @@ Este es el checklist técnico basado estrictamente en los requerimientos de tu e
   - [ ] Breve comentario (1 o 2 párrafos sobre lo que desarrollaron).
   - [ ] Link al Drive.
   - [ ] Lista completa de los integrantes del grupo.
+  - [ ] Video.
+
