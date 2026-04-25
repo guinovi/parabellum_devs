@@ -2,51 +2,78 @@
   {
     "id": 1,
     "nombre": "Pan Integral",
-    "precio": 3.50
+    "precio": 50020,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 2,
     "nombre": "Baguette Francesa",
-    "precio": 4.00
+    "precio": 4,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 3,
     "nombre": "Croissant",
-    "precio": 2.75
+    "precio": 2.75,
+    "tipo": "producto_terminado",
+    "activo": false
   },
   {
     "id": 4,
     "nombre": "Donut con Chocolate",
-    "precio": 1.50
+    "precio": 1.5,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 5,
     "nombre": "Pan de Avena",
-    "precio": 3.25
+    "precio": 3.25,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 6,
     "nombre": "Pastel de Queso",
-    "precio": 5.00
+    "precio": 5,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 7,
     "nombre": "Pan Tostado",
-    "precio": 2.50
+    "precio": 2.5,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 8,
     "nombre": "Empanada de Carne",
-    "precio": 3.00
+    "precio": 3,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 9,
     "nombre": "Medialuna",
-    "precio": 1.75
+    "precio": 1.75,
+    "tipo": "producto_terminado",
+    "activo": true
   },
   {
     "id": 10,
     "nombre": "Pan de Chocolate",
-    "precio": 2.00
+    "precio": 2,
+    "tipo": "producto_terminado",
+    "activo": true
+  },
+  {
+    "id": 1777082334264,
+    "nombre": "Media Docena de Facturas",
+    "precio": 4500,
+    "tipo": "panaderia_dulce",
+    "activo": true
   }
 ]
