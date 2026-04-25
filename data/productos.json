@@ -75,5 +75,12 @@
     "precio": 4500,
     "tipo": "panaderia_dulce",
     "activo": true
+  },
+  {
+    "id": 12,
+    "nombre": "Criollitos de hojaldre",
+    "precio": 3000,
+    "tipo": "producto_terminado",
+    "activo": true
   }
 ]
