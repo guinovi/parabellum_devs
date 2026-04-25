@@ -13,7 +13,7 @@ import Producto from "../models/Producto.js";
             }
 
             const nuevo = Producto.crear(req.body);
-            res.status(201).json({ mensaje: "Prodcuto creado con exito", data: nuevo})
+            res.status(201).json({ mensaje: "Producto creado con exito", data: nuevo})
         } catch (error) {
             console.log("ATENCIÓN, EL ERROR REAL ES:", error);
             res.status(500).json({ error: "Error al crear el producto" });
@@ -64,5 +64,5 @@ import Producto from "../models/Producto.js";
         if (!borrado) {
             return res.status(404).json({ error: "No se pudo eliminar, producto no encontrado"})
         }
-        res.status(200).json({ mensaje: "Prodcuto desactivado correctamente"});
+        res.status(200).json({ mensaje: "Producto desactivado correctamente"});
     };
