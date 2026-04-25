@@ -28,7 +28,7 @@ class Producto {
     static crear(datos) {
         const productos = this.getTodos();
         const nuevoProducto = new Producto(
-            Date.now(),
+            Number(datos.id),
             datos.nombre,
             Number(datos.precio),
             datos.tipo
