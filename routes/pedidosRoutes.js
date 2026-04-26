@@ -1,6 +1,7 @@
 import express from 'express';
 
 import {
+    getPedidosVista,
     getPedidos,
     getPedidoById,
     createPedido,
@@ -12,7 +13,8 @@ import {
 const router = express.Router();
 
 // CRUD Pedidos
-router.get('/pedidos', getPedidos);                 // Leer todos (HTML)
+router.get('/pedidos', getPedidosVista);                 // Leer todos (HTML)
+router.get('/api/pedidos', getPedidos);              // Leer todos (JSON)
 router.get('/pedidos/nuevo', formularioNuevoPedido); // Formulario para crear nuevo pedido
 router.get('/pedidos/:id', getPedidoById);          // Leer por ID
 router.post('/pedidos', createPedido);              // Crear nuevo

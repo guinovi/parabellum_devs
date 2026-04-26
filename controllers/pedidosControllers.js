@@ -1,13 +1,25 @@
 import Pedido from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
 
-// Leer todos los pedidos
+
+// Leer todos los pedidos (JSON)
 export const getPedidos = (req, res) => {
+    try {   
+        const pedidos = Pedido.getTodos();
+        res.status(200).json(pedidos);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los pedidos" });
+    }
+
+};
+
+// Leer todos los pedidos (HTML)
+export const getPedidosVista = (req, res) => {
     try {
         const pedidos = Pedido.getTodos();
         res.render('listaPedidos', { pedidos });
     } catch (error) {
-        res.status(500).send("Error");
+        res.status(500).send({ error: "Error al obtener los pedidos" });
     }
 };
 

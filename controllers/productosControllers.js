@@ -56,7 +56,7 @@ export const getProductosVista = (req, res) => {
         let productos = Producto.getTodos();
         productos = productos.filter(p => p.activo === true);
 
-        res.render('index', { productos });
+        res.render('listaProductos', { productos });
 
     } catch (error) {
         res.status(500).send({ error: "Error al obtener los productos" });
