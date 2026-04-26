@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    h1 Lista de Pedidos
+
+    table(border='1')
+        tr
+            th ID
+            th Fecha
+            th Productos
+            th Cantidad
+
+        each pedido in pedidos
+            tr
+                td #{pedido.id}
+                td #{pedido.fecha}
+                td 
+                    each producto in pedido.productos
+                        span #{producto.id}
+                        br
+                td 
+                    each producto in pedido.productos
+                        span #{producto.cantidad}
+                        br
+
+    br
+    a(href='/pedidos/nuevo') Crear nuevo pedido

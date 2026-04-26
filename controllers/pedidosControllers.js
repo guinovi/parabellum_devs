@@ -5,9 +5,19 @@ import Producto from "../models/Producto.js";
 export const getPedidos = (req, res) => {
     try {
         const pedidos = Pedido.getTodos();
-        res.status(200).json(pedidos);
+        res.render('listaPedidos', { pedidos });
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener pedidos" });
+        res.status(500).send("Error");
+    }
+};
+
+// Formulario para crear nuevo pedido
+export const formularioNuevoPedido = (req, res) => {
+    try {
+        const productos = Producto.getTodos().filter(p => p.activo === true);
+        res.render('nuevoPedido', { productos });
+    } catch (error) {
+        res.status(500).send("Error");
     }
 };
 
@@ -27,24 +37,30 @@ export const getPedidoById = (req, res) => {
 // Crear un nuevo pedido
 export const createPedido = (req, res) => {
     try {
-        const { id, productos, fecha } = req.body;
+        const { id, fecha } = req.body;
 
-        // Validaciones
-        if (!id || !productos || !fecha) {
-            return res.status(400).json({ error: "Faltan datos obligatorios: id, productos, fecha" });
+        // Validaciones básicas
+        if (!id || !fecha) {
+            return res.status(400).send("Faltan datos obligatorios: id y fecha");
         }
 
-        if (!Array.isArray(productos) || productos.length === 0) {
-            return res.status(400).json({ error: "Productos debe ser un array no vacío" });
-        }
+        // Construir array de productos desde los campos del formulario
+        const productosDB = Producto.getTodos().filter(p => p.activo === true);
+        const productos = [];
 
-        // Validar que todos los productos existan
-        const productosDB = Producto.getTodos();
-        for (let item of productos) {
-            const existe = productosDB.find(p => p.id === Number(item.id));
-            if (!existe) {
-                return res.status(400).json({ error: `Producto con id ${item.id} no existe` });
+        for (let producto of productosDB) {
+            const cantidad = req.body[`cantidad_${producto.id}`];
+            if (cantidad && Number(cantidad) > 0) {
+                productos.push({
+                    id: producto.id,
+                    cantidad: Number(cantidad)
+                });
             }
+        }
+
+        // Validar que haya al menos un producto
+        if (productos.length === 0) {
+            return res.status(400).send("Debe seleccionar al menos un producto");
         }
 
         const nuevoPedido = Pedido.crear({
@@ -53,10 +69,12 @@ export const createPedido = (req, res) => {
             fecha
         });
 
-        res.status(201).json({ mensaje: "Pedido creado correctamente", data: nuevoPedido });
+        // Redirigir a la lista de pedidos
+        res.redirect('/pedidos');
+
     } catch (error) {
-        console.log("ERROR:", error);
-        res.status(500).json({ error: "Error al crear el pedido" });
+        console.log("ATENCIÓN, EL ERROR REAL ES:", error);
+        res.status(500).send("Error al crear el pedido");
     }
 };
 
