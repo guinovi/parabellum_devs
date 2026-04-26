@@ -2,6 +2,7 @@ import express from 'express'
 const app = express();
 
 import productosRoutes from './routes/productosRoutes.js';
+import pedidosRoutes from './routes/pedidosRoutes.js';
 
 app.use(express.json());
 // Para manejar datos enviados a través de formularios HTML
@@ -12,6 +13,7 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 app.use(productosRoutes);
+app.use(pedidosRoutes);
 
 app.get('/', (req, res) => {
     res.render('home');
