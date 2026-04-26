@@ -37,8 +37,21 @@ export const formularioNuevoProducto = (req, res) => {
     res.render('nuevoProducto');
 };
 
-//leer todos
+
+
+//leer todos(JSON)
 export const getProductos = (req, res) => {
+    try {
+        let productos = Producto.getTodos();
+        productos = productos.filter(p => p.activo === true);
+        res.status(200).json(productos);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los productos" });
+    }
+};
+
+//leer todos(HTML)
+export const getProductosVista = (req, res) => {
     try {
         let productos = Producto.getTodos();
         productos = productos.filter(p => p.activo === true);
@@ -46,7 +59,7 @@ export const getProductos = (req, res) => {
         res.render('index', { productos });
 
     } catch (error) {
-        res.status(500).send("Error");
+        res.status(500).send({ error: "Error al obtener los productos" });
     }
 };
 

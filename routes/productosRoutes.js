@@ -1,6 +1,7 @@
 import express from 'express';
 
 import {
+    getProductosVista,
     getProductos,
     getProductoById,
     createProducto,
@@ -13,7 +14,8 @@ const router = express.Router();
 
 //CRUDS
 
-router.get('/productos', getProductos);           // Leer todos
+router.get('/productos', getProductosVista);           // Leer todos EN HTML
+router.get('/api/productos', getProductos);            //Leer todos en JSON  
 router.get('/productos/nuevo', formularioNuevoProducto); // Formulario para crear nuevo producto
 router.get('/productos/:id', getProductoById);    // Leer uno puntual
 router.post('/productos', createProducto);        // Crear nuevo
