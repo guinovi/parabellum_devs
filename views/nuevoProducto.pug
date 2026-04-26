@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    h2 Nuevo Producto
+
+    form(method='POST', action='/productos')
+        label ID:
+        input(type='number', name='id', required)
+
+        br
+
+        label Nombre:
+        input(type='text', name='nombre', required)
+
+        br
+
+        label Precio:
+        input(type='number', name='precio', required)
+
+        br
+
+        label Tipo:
+        input(type='text', name='tipo', required)
+
+        br
+
+        label Activo:
+        input(type='checkbox', name='activo')
+
+        br
+        br
+
+        button(type='submit') Crear Producto

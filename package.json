@@ -1,14 +1,13 @@
 {
   "dependencies": {
-    "express": "^5.2.1"
-
+    "express": "^5.2.1",
+    "pug": "^3.0.4"
   },
   "type": "module",
   "name": "parabellum_devs",
   "version": "0.0.1",
   "description": "software para panaderias",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",

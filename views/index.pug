@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1 Lista de Productos
+
+    table(border='1')
+        tr
+            th ID
+            th Nombre
+            th Precio
+            th Tipo
+            th Activo
+
+        each producto in productos
+            tr
+                td #{producto.id}
+                td #{producto.nombre}
+                td #{producto.precio}
+                td #{producto.tipo}
+                td #{producto.activo ? 'Sí' : 'No'}

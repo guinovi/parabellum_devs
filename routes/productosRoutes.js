@@ -5,7 +5,8 @@ import {
     getProductoById,
     createProducto,
     updateProducto,
-    deleteProducto
+    deleteProducto,
+    formularioNuevoProducto
 } from '../controllers/productosControllers.js'
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const router = express.Router();
 //CRUDS
 
 router.get('/productos', getProductos);           // Leer todos
+router.get('/productos/nuevo', formularioNuevoProducto); // Formulario para crear nuevo producto
 router.get('/productos/:id', getProductoById);    // Leer uno puntual
 router.post('/productos', createProducto);        // Crear nuevo
 router.put('/productos/:id', updateProducto);     // Modificar

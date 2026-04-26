@@ -82,5 +82,12 @@
     "precio": 3000,
     "tipo": "producto_terminado",
     "activo": true
+  },
+  {
+    "id": 13,
+    "nombre": "Alfajor",
+    "precio": 35,
+    "tipo": "producto_terminado",
+    "activo": true
   }
 ]
