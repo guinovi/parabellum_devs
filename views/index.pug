@@ -10,6 +10,7 @@ block content
             th Precio
             th Tipo
             th Activo
+            th Accion
 
         each producto in productos
             tr
@@ -18,3 +19,25 @@ block content
                 td #{producto.precio}
                 td #{producto.tipo}
                 td #{producto.activo ? 'Sí' : 'No'}
+                td 
+                    //- Fíjate que estos botones están un 'Tab' o dos espacios más adentro que el 'td' superior
+                    a(href=`/productos/editarProducto/${producto.id}`)
+                    button Editar
+                    button(onclick=`eliminarProducto(${producto.id})`) Eliminar
+
+    script.
+        async function eliminarProducto(id) {
+        const confirmacion = confirm('¿Eliminar producto?');
+        if (confirmacion) {
+            try {
+            const response = await fetch(`/productos/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error al eliminar');
+            }
+            } catch (error) {
+            console.error(error);
+            }
+        }
+        }

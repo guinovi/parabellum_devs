@@ -9,6 +9,7 @@ block content
             th Fecha
             th Productos
             th Cantidad
+            th Accion
 
         each pedido in pedidos
             tr
@@ -22,6 +23,28 @@ block content
                     each producto in pedido.productos
                         span #{producto.cantidad}
                         br
+                td  
+                    //- Fíjate que estos botones están un 'Tab' o dos espacios más adentro que el 'td' superior
+                    a(href=`/pedidos/editar/${pedido.id}`)
+                    button Editar
+                    button(onclick=`eliminarPedido(${pedido.id})`) Eliminar
 
     br
     a(href='/pedidos/nuevo') Crear nuevo pedido
+
+    script.
+        async function eliminarPedido(id) {
+        const confirmacion = confirm('¿Eliminar pedido?');
+        if (confirmacion) {
+            try {
+            const response = await fetch(`/pedidos/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error al eliminar');
+            }
+            } catch (error) {
+            console.error(error);
+            }
+        }
+        }
