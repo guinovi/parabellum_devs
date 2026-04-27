@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "nombre": "Pan Integral",
-    "precio": 50020,
+    "nombre": "Pan Salvado",
+    "precio": 20150,
     "tipo": "producto_terminado",
     "activo": true
   },
@@ -29,14 +29,14 @@
   },
   {
     "id": 5,
-    "nombre": "Pan de Avena",
-    "precio": 3.25,
+    "nombre": "Pan Salvado",
+    "precio": 20150,
     "tipo": "producto_terminado",
     "activo": true
   },
   {
     "id": 6,
-    "nombre": "Pastel de Queso",
+    "nombre": "Bizcocho de Queso",
     "precio": 5,
     "tipo": "producto_terminado",
     "activo": true
@@ -60,12 +60,12 @@
     "nombre": "Medialuna",
     "precio": 1.75,
     "tipo": "producto_terminado",
-    "activo": true
+    "activo": false
   },
   {
-    "id": 10,
-    "nombre": "Pan de Chocolate",
-    "precio": 2,
+    "id": 15,
+    "nombre": "Pastel de Chocolate",
+    "precio": 10,
     "tipo": "producto_terminado",
     "activo": true
   },
