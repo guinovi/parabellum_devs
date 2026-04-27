@@ -4,7 +4,7 @@ import Producto from "../models/Producto.js";
 
 // Leer todos los pedidos (JSON)
 export const getPedidos = (req, res) => {
-    try {   
+    try {
         const pedidos = Pedido.getTodos();
         res.status(200).json(pedidos);
     } catch (error) {
@@ -50,23 +50,32 @@ export const getPedidoById = (req, res) => {
 export const createPedido = (req, res) => {
     try {
         const { id, fecha } = req.body;
+        let productos = [];
 
         // Validaciones básicas
         if (!id || !fecha) {
             return res.status(400).send("Faltan datos obligatorios: id y fecha");
         }
 
-        // Construir array de productos desde los campos del formulario
-        const productosDB = Producto.getTodos().filter(p => p.activo === true);
-        const productos = [];
+        // Si viene desde Thunder Client (JSON)
+        if (req.body.productos) {
+            productos = req.body.productos;
+        }
 
-        for (let producto of productosDB) {
-            const cantidad = req.body[`cantidad_${producto.id}`];
-            if (cantidad && Number(cantidad) > 0) {
-                productos.push({
-                    id: producto.id,
-                    cantidad: Number(cantidad)
-                });
+        else {
+
+            // Construir array de productos desde los campos del formulario
+            const productosDB = Producto.getTodos().filter(p => p.activo === true);
+            const productos = [];
+
+            for (let producto of productosDB) {
+                const cantidad = req.body[`cantidad_${producto.id}`];
+                if (cantidad && Number(cantidad) > 0) {
+                    productos.push({
+                        id: producto.id,
+                        cantidad: Number(cantidad)
+                    });
+                }
             }
         }
 
