@@ -20,7 +20,6 @@ block content
                 td #{producto.tipo}
                 td #{producto.activo ? 'Sí' : 'No'}
                 td 
-                    //- Fíjate que estos botones están un 'Tab' o dos espacios más adentro que el 'td' superior
                     a(href=`/productos/editarProducto/${producto.id}`)
                     button Editar
                     button(onclick=`eliminarProducto(${producto.id})`) Eliminar

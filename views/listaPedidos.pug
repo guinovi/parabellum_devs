@@ -24,7 +24,6 @@ block content
                         span #{producto.cantidad}
                         br
                 td  
-                    //- Fíjate que estos botones están un 'Tab' o dos espacios más adentro que el 'td' superior
                     a(href=`/pedidos/editar/${pedido.id}`)
                     button Editar
                     button(onclick=`eliminarPedido(${pedido.id})`) Eliminar
