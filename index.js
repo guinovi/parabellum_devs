@@ -1,4 +1,8 @@
 import express from 'express'
+import conectarDB from './config/db.js';
+
+conectarDB();
+
 const app = express();
 
 import productosRoutes from './routes/productosRoutes.js';
