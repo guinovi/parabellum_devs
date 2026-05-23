@@ -1,0 +1,14 @@
+[
+  {
+    "email": "admin@espigadeoro.com",
+    "password": "admin123",
+    "nombre": "Admin Espiga",
+    "rol": "admin"
+  },
+  {
+    "email": "franquiciado@espigadeoro.com",
+    "password": "franquicia123",
+    "nombre": "Franquiciado Demo",
+    "rol": "franquicia"
+  }
+]

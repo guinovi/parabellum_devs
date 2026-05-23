@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    h1 Bienvenido
+    h1 Bienvenido, #{usuario.nombre}
 
     h2 Sistema de gestión - "La Espiga de Oro S.R.L"
 
@@ -10,6 +10,11 @@ block content
     h3 Menú
     ul
         li
-            a(href='/productos') Ver Productos
-        li
             a(href='/pedidos') Ver Pedidos
+        li
+            a(href='/pedidos/nuevo') Nuevo Pedido
+        if usuario.rol === 'admin'
+            li
+                a(href='/productos') Ver Productos
+            li
+                a(href='/productos/nuevo') Nuevo Producto
