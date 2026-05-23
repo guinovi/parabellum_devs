@@ -10,16 +10,17 @@ import {
     formularioNuevoProducto
 } from '../controllers/productosControllers.js'
 
+import { requiereAdmin } from '../middleware/auth.js';
+
 const router = express.Router();
 
-//CRUDS
-
-router.get('/productos', getProductosVista);           // Leer todos EN HTML
-router.get('/api/productos', getProductos);            //Leer todos en JSON  
-router.get('/productos/nuevo', formularioNuevoProducto); // Formulario para crear nuevo producto
-router.get('/productos/:id', getProductoById);    // Leer uno puntual
-router.post('/productos', createProducto);        // Crear nuevo
-router.put('/productos/:id', updateProducto);     // Modificar
-router.delete('/productos/:id', deleteProducto);  // Dar de baja
+// Toda la sección de productos es exclusiva del admin
+router.get('/productos', requiereAdmin, getProductosVista);           // Leer todos EN HTML
+router.get('/api/productos', requiereAdmin, getProductos);            // Leer todos en JSON
+router.get('/productos/nuevo', requiereAdmin, formularioNuevoProducto); // Formulario para crear nuevo producto
+router.get('/productos/:id', requiereAdmin, getProductoById);    // Leer uno puntual
+router.post('/productos', requiereAdmin, createProducto);        // Crear nuevo
+router.put('/productos/:id', requiereAdmin, updateProducto);     // Modificar
+router.delete('/productos/:id', requiereAdmin, deleteProducto);  // Dar de baja
 
 export default router;

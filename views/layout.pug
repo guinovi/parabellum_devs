@@ -1,4 +1,4 @@
-doctype html 
+doctype html
 html(lang='es')
     head
         meta(charset='UTF-8')
@@ -8,24 +8,29 @@ html(lang='es')
     body
         header
             h1 Parabellum Devs - La Espiga de Oro S.R.L
-            nav
-            a(href='/') Inicio
-            |  |  
-            a(href='/productos') Productos
-            |  |  
-            a(href='/productos/nuevo') Nuevo Producto
-            |  |  
-            a(href='/pedidos') Pedidos
-            |  |  
-            a(href='/pedidos/nuevo') Nuevo Pedido
-    
-        
+            if usuario
+                nav
+                    a(href='/') Inicio
+                    |  |
+                    a(href='/pedidos') Pedidos
+                    |  |
+                    a(href='/pedidos/nuevo') Nuevo Pedido
+                    if usuario.rol === 'admin'
+                        |  |
+                        a(href='/productos') Productos
+                        |  |
+                        a(href='/productos/nuevo') Nuevo Producto
+                    |  |
+                    span Hola, #{usuario.nombre} (#{usuario.rol})
+                    |  |
+                    form(method='POST', action='/logout', style='display:inline')
+                        button(type='submit') Cerrar sesión
+
             hr
 
             block content
 
             hr
 
-            footer 
+            footer
                 p &copy; 2026 Parabellum Devs - Todos los derechos reservados.
-                
