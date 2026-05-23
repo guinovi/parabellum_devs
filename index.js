@@ -36,6 +36,9 @@ app.use((req, res, next) => {
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+// Archivos estáticos (CSS, imágenes, JS del cliente)
+app.use(express.static('public'));
+
 // Rutas de autenticación (públicas)
 app.use(usuariosRoutes);
 
