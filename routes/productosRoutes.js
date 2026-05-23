@@ -3,6 +3,7 @@ import express from 'express';
 import {
     getProductosVista,
     getProductos,
+    formularioEditarProducto,
     getProductoById,
     createProducto,
     updateProducto,
@@ -20,7 +21,9 @@ router.get('/api/productos', requiereAdmin, getProductos);            // Leer to
 router.get('/productos/nuevo', requiereAdmin, formularioNuevoProducto); // Formulario para crear nuevo producto
 router.get('/productos/:id', requiereAdmin, getProductoById);    // Leer uno puntual
 router.post('/productos', requiereAdmin, createProducto);        // Crear nuevo
+router.get('/productos/editar/:id', requiereAdmin, formularioEditarProducto); // Formulario para editar producto con sus datos precargados
 router.put('/productos/:id', requiereAdmin, updateProducto);     // Modificar
 router.delete('/productos/:id', requiereAdmin, deleteProducto);  // Dar de baja
+
 
 export default router;
