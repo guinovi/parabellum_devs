@@ -39,7 +39,19 @@ export const formularioNuevoProducto = (req, res) => {
     res.render('nuevoProducto');
 };
 
-
+export const formularioEditarProducto = async (req, res) => {
+    try {
+        const producto = await Producto.findOne({
+            id: Number(req.params.id)
+        });
+        if (!producto) {
+            return res.status(404).send('Producto no encontrado');
+        }
+        res.render('editarProducto', { producto });
+    } catch (error) {
+        res.status(500).send('Error al cargar producto');
+    }
+};
 
 //leer todos(JSON)
 export const getProductos = async (req, res) => {
