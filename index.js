@@ -1,8 +1,11 @@
 import express from 'express'
 import session from 'express-session'
+import dotenv from 'dotenv';
 import conectarDB from './config/db.js';
 import { requiereAuth } from './middleware/auth.js';
 
+
+dotenv.config();
 conectarDB();
 
 const app = express();
