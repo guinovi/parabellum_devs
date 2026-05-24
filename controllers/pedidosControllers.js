@@ -1,11 +1,12 @@
 import Pedido from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
+import { getNextPedidoId } from "../utils/idGenerator.js";
 
 
 // Leer todos los pedidos (JSON)
-export const getPedidos = (req, res) => {
+export const getPedidos = async (req, res) => {
     try {
-        const pedidos = Pedido.getTodos();
+        const pedidos = await Pedido.getTodos();
         res.status(200).json(pedidos);
     } catch (error) {
         res.status(500).json({ error: "Error al obtener los pedidos" });
@@ -14,9 +15,9 @@ export const getPedidos = (req, res) => {
 };
 
 // Leer todos los pedidos (HTML)
-export const getPedidosVista = (req, res) => {
+export const getPedidosVista = async (req, res) => {
     try {
-        const pedidos = Pedido.getTodos();
+        const pedidos =  await Pedido.find();
         res.render('listaPedidos', { pedidos });
     } catch (error) {
         res.status(500).send({ error: "Error al obtener los pedidos" });
@@ -24,19 +25,20 @@ export const getPedidosVista = (req, res) => {
 };
 
 // Formulario para crear nuevo pedido
-export const formularioNuevoPedido = (req, res) => {
+export const formularioNuevoPedido = async (req, res) => {
     try {
-        const productos = Producto.getTodos().filter(p => p.activo === true);
-        res.render('nuevoPedido', { productos });
+        const productos = await Producto.find({ activo: true }); //Buscamos directamente los productos activos
+        const fechaHoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        res.render('nuevoPedido', { productos, fechaHoy });
     } catch (error) {
-        res.status(500).send("Error");
+        res.status(500).send("Error a cargar el formulario");
     }
 };
 
 // Leer un pedido por ID
-export const getPedidoById = (req, res) => {
+export const getPedidoById = async (req, res) => {
     try {
-        const pedido = Pedido.buscarPorID(req.params.id);
+        const pedido = await Pedido.findOne({ id: Number(req.params.id) });
         if (!pedido) {
             return res.status(404).json({ error: "Pedido no encontrado" });
         }
@@ -47,14 +49,14 @@ export const getPedidoById = (req, res) => {
 };
 
 // Crear un nuevo pedido
-export const createPedido = (req, res) => {
+export const createPedido = async (req, res) => {
     try {
-        const { id, fecha } = req.body;
+        const { fecha } = req.body;
         let productos = [];
 
         // Validaciones básicas
-        if (!id || !fecha) {
-            return res.status(400).send("Faltan datos obligatorios: id y fecha");
+        if (!fecha) {
+            return res.status(400).send("Faltan datos obligatorios: fecha");
         }
 
         // Si viene desde Thunder Client (JSON)
@@ -65,8 +67,7 @@ export const createPedido = (req, res) => {
         else {
 
             // Construir array de productos desde los campos del formulario
-            const productosDB = Producto.getTodos().filter(p => p.activo === true);
-            const productos = [];
+            const productosDB = await Producto.find({ activo: true });
 
             for (let producto of productosDB) {
                 const cantidad = req.body[`cantidad_${producto.id}`];
@@ -84,8 +85,12 @@ export const createPedido = (req, res) => {
             return res.status(400).send("Debe seleccionar al menos un producto");
         }
 
-        const nuevoPedido = Pedido.crear({
-            id: Number(id),
+        // Obtener siguiente ID autoincremental
+        const nuevoId = await getNextPedidoId();
+
+        //guardamos en mongo db
+        await Pedido.create({
+            id: nuevoId,
             productos,
             fecha
         });
@@ -100,13 +105,13 @@ export const createPedido = (req, res) => {
 };
 
 // Actualizar un pedido
-export const updatePedido = (req, res) => {
+export const updatePedido = async (req, res) => {
     try {
         const { productos, fecha } = req.body;
 
         // Si se actualiza productos, validar que existan
         if (productos) {
-            const productosDB = Producto.getTodos();
+            const productosDB = await Producto.find();
             for (let item of productos) {
                 const existe = productosDB.find(p => p.id === Number(item.id));
                 if (!existe) {
@@ -115,10 +120,11 @@ export const updatePedido = (req, res) => {
             }
         }
 
-        const actualizado = Pedido.actualizar(req.params.id, {
-            productos,
-            fecha
-        });
+        const actualizado = await Pedido.findOneAndUpdate(
+            { id: Number(req.params.id) },
+            { productos, fecha },
+            { new: true }
+        );
 
         if (!actualizado) {
             return res.status(404).json({ error: "Pedido no encontrado" });
@@ -131,9 +137,10 @@ export const updatePedido = (req, res) => {
 };
 
 // Eliminar un pedido
-export const deletePedido = (req, res) => {
+export const deletePedido = async (req, res) => {
     try {
-        const borrado = Pedido.borrar(req.params.id);
+        const borrado =  await Pedido.findOneAndDelete({ id: Number(req.params.id) });
+
         if (!borrado) {
             return res.status(404).json({ error: "Pedido no encontrado" });
         }

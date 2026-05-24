@@ -1,0 +1,62 @@
+extends layout
+
+block content
+
+    h1 Editar Producto
+
+    form(id='formEditar')
+
+        label ID:
+        input(type='hidden' id='productoId' value=producto.id)
+
+        br
+        br
+
+        label Nombre:
+        input(type='text' id='nombre' value=producto.nombre)
+
+        br
+        br
+
+        label Precio:
+        input(type='number' id='precio' value=producto.precio)
+
+        br
+        br
+
+        label Tipo:
+        input(type='text' id='tipo' value=producto.tipo)
+
+        br
+        br
+
+        button(type='submit') Guardar Cambios
+        button(type='button' onclick="window.location.href='/productos'") Cancelar
+        
+    script.
+
+        document.getElementById('formEditar')
+        .addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById('productoId').value;
+
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                precio: document.getElementById('precio').value,
+                tipo: document.getElementById('tipo').value
+
+            };
+
+            try {
+                const response = await fetch(`/productos/${id}`, {method: 'PUT',headers: {'Content-Type': 'application/json'},body: JSON.stringify(datos)});
+                if (response.ok) {
+                    alert('Producto actualizado');
+                    window.location.href = '/productos';
+                } else {
+                    alert('Error al actualizar');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });

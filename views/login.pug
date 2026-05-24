@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h2 Iniciar Sesión
+
+    if error
+        p(style='color: red;') #{error}
+
+    form(method='POST', action='/login')
+        label Email:
+        input(type='email', name='email', required)
+
+        br
+        br
+
+        label Contraseña:
+        input(type='password', name='password', required)
+
+        br
+        br
+
+        button(type='submit') Ingresar

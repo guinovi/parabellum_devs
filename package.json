@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.6.2",
+    "dotenv": "^16.1.4",
     "pug": "^3.0.4"
   },
   "type": "module",
@@ -10,8 +14,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "seed": "node scripts/seedData.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bascur, Masini, Nicoletti, Novillo",
   "license": "ISC"

@@ -1,67 +1,13 @@
-import fs from 'fs';
-import path from 'path';
+import mongoose from 'mongoose';
 
-const dataPath = path.join(process.cwd(),'data','pedidos.json');
+//creamos el objeto de pedido
+const pedidoSchema = new mongoose.Schema({
+    id: { type: Number, required: true, unique: true },
+    productos: [{
+        id: { type: Number, required: true },
+        cantidad: { type: Number, required: true }
+    }], //array de productos con su id y cantidad
+    fecha: { type: String, required: true }
+});
 
-class Pedido {
-    constructor (id, productos, fecha){
-        this.id = id;
-        this.productos = productos;
-        this.fecha = fecha;
-    }
-
-    static getTodos(){
-        try {
-            const data = fs.readFileSync(dataPath, 'utf-8');
-            return JSON.parse(data);
-        } catch (error) {
-            return [];
-        }
-    }
-
-    static guardarDatos(pedidos) {
-        fs.writeFileSync(dataPath, JSON.stringify(pedidos, null, 2));
-    }
-
-    static crear(datos) {
-        const pedidos = this.getTodos();
-        const nuevoPedido = new Pedido(
-            Number(datos.id),
-            datos.productos,
-            datos.fecha
-        );
-        
-        pedidos.push(nuevoPedido);
-        this.guardarDatos(pedidos);
-        return nuevoPedido;
-    }
-
-    static buscarPorID(id) {
-        const pedidos = this.getTodos();
-        return pedidos.find(p => p.id === Number(id));
-    }
-
-    static actualizar(id, datosNuevos) {
-        const pedidos = this.getTodos();
-        const index = pedidos.findIndex(p => p.id === Number(id));
-        
-        if (index === -1) return null;
-        
-        pedidos[index] = { ...pedidos[index], ...datosNuevos };
-        this.guardarDatos(pedidos);
-        return pedidos[index];
-    }
-
-    static borrar(id) {
-        const pedidos = this.getTodos();
-        const index = pedidos.findIndex(p => p.id === Number(id));
-        
-        if (index === -1) return false;
-        
-        pedidos.splice(index, 1);
-        this.guardarDatos(pedidos);
-        return true;
-    }
-}
-
-export default Pedido;
+export default mongoose.model('Pedido', pedidoSchema);

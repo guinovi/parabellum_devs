@@ -10,15 +10,17 @@ import {
     formularioNuevoPedido
 } from '../controllers/pedidosControllers.js'
 
+import { requiereAuth } from '../middleware/auth.js';
+
 const router = express.Router();
 
-// CRUD Pedidos
-router.get('/pedidos', getPedidosVista);                 // Leer todos (HTML)
-router.get('/api/pedidos', getPedidos);              // Leer todos (JSON)
-router.get('/pedidos/nuevo', formularioNuevoPedido); // Formulario para crear nuevo pedido
-router.get('/pedidos/:id', getPedidoById);          // Leer por ID
-router.post('/pedidos', createPedido);              // Crear nuevo
-router.put('/pedidos/:id', updatePedido);           // Modificar
-router.delete('/pedidos/:id', deletePedido);        // Eliminar
+// Pedidos: ambos roles (admin y franquicia) pueden ver y crear
+router.get('/pedidos', requiereAuth, getPedidosVista);                 // Leer todos (HTML)
+router.get('/api/pedidos', requiereAuth, getPedidos);                  // Leer todos (JSON)
+router.get('/pedidos/nuevo', requiereAuth, formularioNuevoPedido);     // Formulario para crear nuevo pedido
+router.get('/pedidos/:id', requiereAuth, getPedidoById);               // Leer por ID
+router.post('/pedidos', requiereAuth, createPedido);                   // Crear nuevo
+router.put('/pedidos/:id', requiereAuth, updatePedido);                // Modificar
+router.delete('/pedidos/:id', requiereAuth, deletePedido);             // Eliminar
 
 export default router;
