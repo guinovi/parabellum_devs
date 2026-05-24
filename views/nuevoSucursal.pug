@@ -1,0 +1,60 @@
+extends layout
+
+block content
+    h2 Nueva Sucursal
+
+    form(method='POST', action='/sucursales')
+        label Nombre:
+        input(type='text', name='nombre', required)
+        br
+        br
+
+        label Tipo:
+        select(name='tipo', required)
+            option(value='propia') Propia
+            option(value='franquicia') Franquicia
+            option(value='planta') Planta
+        br
+        br
+
+        label Dirección:
+        input(type='text', name='direccion', required)
+        br
+        br
+
+        label Alias:
+        input(type='text', name='alias', required)
+        br
+        br
+
+        label Ciudad:
+        input(type='text', name='ciudad' value='Córdoba')
+        br
+        br
+
+        label Provincia:
+        input(type='text', name='provincia' value='Córdoba')
+        br
+        br
+
+        label Teléfono:
+        input(type='text', name='telefono')
+        br
+        br
+
+        label Email:
+        input(type='email', name='email')
+        br
+        br
+
+        label Responsable:
+        input(type='text', name='responsable')
+        br
+        br
+
+        label Activo:
+        input(type='checkbox', name='activo' checked)
+        br
+        br
+
+        button(type='submit') Crear Sucursal

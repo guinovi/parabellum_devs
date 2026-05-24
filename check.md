@@ -1,3 +1,9 @@
+# pendientes para 3 entrega
+**Lógica de Estado de Pedidos:** Implementar la validación de estados del pedido: *pendiente, en producción, despachado, entregado*
+
+
+
+
 # Checklist de Requisitos - Parcial de Desarrollo Web Backend
 
 ## 1. Arquitectura y Código (Node.js/Express)
