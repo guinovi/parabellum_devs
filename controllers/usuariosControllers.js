@@ -18,10 +18,22 @@ export const loginUsuario = async (req, res) => {
             return res.status(400).render('login', { error: "Email y contraseña son obligatorios" });
         }
 
-        const usuario = await Usuario.findOne({ email, password });
+        const usuario = await Usuario.findOne({ email });
 
         if (!usuario) {
             return res.status(401).render('login', { error: "Credenciales inválidas" });
+        }
+
+        const passwordMatch = await usuario.comparePassword(password);
+
+        if (!passwordMatch) {
+            // Transitional fallback para usuarios con contraseña en texto plano
+            if (usuario.password === password) {
+                usuario.password = password;
+                await usuario.save();
+            } else {
+                return res.status(401).render('login', { error: "Credenciales inválidas" });
+            }
         }
 
         // Guarda los datos del usuario en sesión
