@@ -5,7 +5,7 @@ const conectarDB = async () => {
     const mongoUriAtlas = process.env.MONGO_URI || process.env.MONGODB_URI;
     const mongoLocal = 'mongodb://127.0.0.1:27017/panificadora_db';
 
-    const mongoUri = mongoUriAtlas;
+    const mongoUri = mongoLocal;
     await mongoose.connect(mongoUri);
 
     if (process.env.MONGO_URI || process.env.MONGODB_URI) {
