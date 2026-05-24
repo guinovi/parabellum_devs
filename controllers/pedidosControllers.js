@@ -1,5 +1,6 @@
 import Pedido from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
+import { getNextPedidoId } from "../utils/idGenerator.js";
 
 
 // Leer todos los pedidos (JSON)
@@ -27,7 +28,8 @@ export const getPedidosVista = async (req, res) => {
 export const formularioNuevoPedido = async (req, res) => {
     try {
         const productos = await Producto.find({ activo: true }); //Buscamos directamente los productos activos
-        res.render('nuevoPedido', { productos });
+        const fechaHoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        res.render('nuevoPedido', { productos, fechaHoy });
     } catch (error) {
         res.status(500).send("Error a cargar el formulario");
     }
@@ -49,12 +51,12 @@ export const getPedidoById = async (req, res) => {
 // Crear un nuevo pedido
 export const createPedido = async (req, res) => {
     try {
-        const { id, fecha } = req.body;
+        const { fecha } = req.body;
         let productos = [];
 
         // Validaciones básicas
-        if (!id || !fecha) {
-            return res.status(400).send("Faltan datos obligatorios: id y fecha");
+        if (!fecha) {
+            return res.status(400).send("Faltan datos obligatorios: fecha");
         }
 
         // Si viene desde Thunder Client (JSON)
@@ -83,9 +85,12 @@ export const createPedido = async (req, res) => {
             return res.status(400).send("Debe seleccionar al menos un producto");
         }
 
-        //guardamos en mongo  db
+        // Obtener siguiente ID autoincremental
+        const nuevoId = await getNextPedidoId();
+
+        //guardamos en mongo db
         await Pedido.create({
-            id: Number(id),
+            id: nuevoId,
             productos,
             fecha
         });
