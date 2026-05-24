@@ -1,0 +1,63 @@
+extends layout
+
+block content
+    h1 Lista de Sucursales
+
+    form(method='GET', action='/sucursales')
+        label Filtrar por tipo:
+        select(name='tipo')
+            option(value='') Todos
+            option(value='propia' selected= tipoFiltro === 'propia') Propias
+            option(value='franquicia' selected= tipoFiltro === 'franquicia') Franquicias
+            option(value='planta' selected= tipoFiltro === 'planta') Planta
+        button(type='submit') Aplicar filtro
+
+    br
+    br
+
+    table(border='1')
+        tr
+            th ID
+            th Nombre
+            th Tipo
+            th Dirección
+            th Alias
+            th Ciudad
+            th Provincia
+            th Teléfono
+            th Email
+            th Responsable
+            th Accion
+
+        each sucursal in sucursales
+            tr
+                td #{sucursal.id}
+                td #{sucursal.nombre}
+                td #{sucursal.tipo}
+                td #{sucursal.direccion}
+                td #{sucursal.alias}
+                td #{sucursal.ciudad}
+                td #{sucursal.provincia}
+                td #{sucursal.telefono || '-'}
+                td #{sucursal.email || '-'}
+                td #{sucursal.responsable || '-'}
+                td
+                    button(onclick=`window.location.href='/sucursales/editar/${sucursal.id}'`) Editar
+                    button(onclick=`eliminarSucursal(${sucursal.id})`) Eliminar
+
+    script.
+        async function eliminarSucursal(id) {
+            const confirmacion = confirm('¿Eliminar sucursal? Esto sólo la desactivará.');
+            if (!confirmacion) return;
+            try {
+                const response = await fetch(`/sucursales/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Error al eliminar sucursal');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de red al eliminar sucursal');
+            }
+        }

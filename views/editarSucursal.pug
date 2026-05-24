@@ -1,0 +1,100 @@
+extends layout
+
+block content
+    h1 Editar Sucursal
+
+    form(id='formEditar')
+        input(type='hidden' id='sucursalId' value=sucursal.id)
+
+        label Nombre:
+        input(type='text' id='nombre' value=sucursal.nombre required)
+        br
+        br
+
+        label Tipo:
+        select(id='tipo' required)
+            option(value='propia' selected=sucursal.tipo === 'propia') Propia
+            option(value='franquicia' selected=sucursal.tipo === 'franquicia') Franquicia
+            option(value='planta' selected=sucursal.tipo === 'planta') Planta
+        br
+        br
+
+        label Dirección:
+        input(type='text' id='direccion' value=sucursal.direccion required)
+        br
+        br
+
+        label Alias:
+        input(type='text' id='alias' value=sucursal.alias required)
+        br
+        br
+
+        label Ciudad:
+        input(type='text' id='ciudad' value=sucursal.ciudad)
+        br
+        br
+
+        label Provincia:
+        input(type='text' id='provincia' value=sucursal.provincia)
+        br
+        br
+
+        label Teléfono:
+        input(type='text' id='telefono' value=sucursal.telefono)
+        br
+        br
+
+        label Email:
+        input(type='email' id='email' value=sucursal.email)
+        br
+        br
+
+        label Responsable:
+        input(type='text' id='responsable' value=sucursal.responsable)
+        br
+        br
+
+        label Activo:
+        input(type='checkbox' id='activo' checked=sucursal.activo)
+        br
+        br
+
+        button(type='submit') Guardar Cambios
+        button(type='button' onclick="window.location.href='/sucursales'") Cancelar
+
+    script.
+        document.getElementById('formEditar').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById('sucursalId').value;
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                tipo: document.getElementById('tipo').value,
+                direccion: document.getElementById('direccion').value,
+                alias: document.getElementById('alias').value,
+                ciudad: document.getElementById('ciudad').value,
+                provincia: document.getElementById('provincia').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value,
+                responsable: document.getElementById('responsable').value,
+                activo: document.getElementById('activo').checked
+            };
+
+            try {
+                const response = await fetch(`/sucursales/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+
+                if (response.ok) {
+                    alert('Sucursal actualizada');
+                    window.location.href = '/sucursales';
+                } else {
+                    alert('Error al actualizar sucursal');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de red al actualizar sucursal');
+            }
+        });
