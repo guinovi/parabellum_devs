@@ -1,25 +1,27 @@
 import Producto from "../models/Producto.js";
+import { getNextProductoId } from "../utils/idGenerator.js";
 
 //Crear producto
 
 export const createProducto = async (req, res) => {
     try {
-        const { id, nombre, precio, tipo, activo } = req.body;
+        const { nombre, precio, tipo, activo } = req.body;
 
         // convertir checkbox a true/false
         const activoBoolean = activo === 'on';
 
-
         //validamos
-
-        if (!id || !nombre || !precio || !tipo) {
+        if (!nombre || !precio || !tipo) {
             return res.status(400).json({ error: "Faltan datos obligatorios" })
         }
+
+        // Obtener siguiente ID autoincremental
+        const nuevoId = await getNextProductoId();
 
         //usamos Mongoose para crear el producto en la base de datos
 
         await Producto.create({
-            id: Number(id),
+            id: nuevoId,
             nombre,
             precio: Number(precio),
             tipo,
