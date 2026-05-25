@@ -2,3 +2,6 @@ package-lock.json
 /node_modules
 /doc
 .env
+
+check.md
+usuarios.md
