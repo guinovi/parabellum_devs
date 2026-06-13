@@ -13,6 +13,7 @@ const app = express();
 import productosRoutes from './routes/productosRoutes.js';
 import pedidosRoutes from './routes/pedidosRoutes.js';
 import usuariosRoutes from './routes/usuariosRoutes.js';
+import sucursalesRoutes from './routes/sucursalesRoutes.js';
 
 app.use(express.json());
 // Para manejar datos enviados a través de formularios HTML
@@ -44,6 +45,7 @@ app.use(usuariosRoutes);
 
 // Rutas protegidas
 app.use(productosRoutes);
+app.use(sucursalesRoutes);
 app.use(pedidosRoutes);
 
 // Home: requiere login

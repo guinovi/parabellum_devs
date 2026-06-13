@@ -1,5 +1,6 @@
 import Pedido from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
+import Sucursal from "../models/Sucursal.js";
 
 /**
  * Obtiene el siguiente ID disponible para pedidos
@@ -33,6 +34,20 @@ export const getNextProductoId = async () => {
         return ultimoProducto ? ultimoProducto.id + 1 : 1;
     } catch (error) {
         console.error("Error al obtener siguiente ID de producto:", error);
+        throw error;
+    }
+};
+
+export const getNextSucursalId = async () => {
+    try {
+        const ultimoRegistro = await Sucursal.findOne()
+            .sort({ id: -1 })
+            .limit(1)
+            .lean();
+        
+        return ultimoRegistro ? ultimoRegistro.id + 1 : 1;
+    } catch (error) {
+        console.error("Error al obtener siguiente ID de sucursal:", error);
         throw error;
     }
 };
