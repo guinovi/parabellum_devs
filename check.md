@@ -82,7 +82,7 @@ Mostrando requisitos_parcial_backend_v2.md.
 - [x] **Arquitectura Modular:** Separación estricta entre Modelos, Rutas, Servicios/Controladores.
 - [ ] **Base de Datos (MongoDB):** Conexión activa a MongoDB Atlas, reemplazando o complementando el almacenamiento en memoria.
 - [x] **Modelado Coherente:** Esquemas definidos con relaciones lógicas (Usuarios/Locales $\rightarrow$ Pedidos $\rightarrow$ Productos) y validación de datos obligatorios.
-- [x] **Autenticación y Autorización:** Acceso restringido implementado (JWT, sesiones, etc.) respetando la matriz (Planta vs. Sucursal vs. Franquicia).
+- [x] **Autenticación y Autorización:** Acceso restringido implementado (sesiones, etc.) respetando la matriz (Planta vs. Sucursal vs. Franquicia).
 - [ ] **Manejo de Errores:** Middlewares personalizados implementados para capturar errores y evitar caídas del servidor.
 - [x] **Respuestas Estándar:** La API responde en formato JSON con códigos HTTP adecuados (200, 201, 400, 403, 500).
 - [x] **Asincronía:** Uso correcto de promesas o `async/await` en todas las operaciones de I/O y base de datos.

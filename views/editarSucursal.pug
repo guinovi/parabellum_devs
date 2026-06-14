@@ -1,71 +1,60 @@
 extends layout
 
 block content
-    h1 Editar Sucursal
+    section.page-hero
+        p.eyebrow Sucursales
+        h1 Editar sucursal
+        p Actualizá los datos operativos de la sucursal.
 
-    form(id='formEditar')
+    form.form-card(id='formEditar')
         input(type='hidden' id='sucursalId' value=sucursal.id)
+        .form-grid
+            .form-group
+                label(for='nombre') Nombre de Sucursal
+                input#nombre(type='text' value=sucursal.nombre required)
+            .form-group
+                label(for='tipo') Tipo
+                select#tipo(required)
+                    option(value='propia' selected=sucursal.tipo === 'propia') Propia
+                    option(value='franquicia' selected=sucursal.tipo === 'franquicia') Franquicia
+                    option(value='planta' selected=sucursal.tipo === 'planta') Planta
+            .form-group.full
+                label(for='direccion') Dirección
+                input#direccion(type='text' value=sucursal.direccion required)
+            .form-group
+                label(for='alias') Alias
+                input#alias(type='text' value=sucursal.alias required)
+            .form-group
+                label(for='ciudad') Ciudad
+                input#ciudad(type='text' value=sucursal.ciudad)
+            .form-group
+                label(for='provincia') Provincia
+                input#provincia(type='text' value=sucursal.provincia)
+            .form-group
+                label(for='telefono') Teléfono
+                input#telefono(type='text' value=sucursal.telefono)
+            .form-group
+                label(for='email') Correo Electrónico
+                input#email(type='email' value=sucursal.email)
+            .form-group
+                label(for='responsable') Responsable
+                input#responsable(type='text' value=sucursal.responsable)
+            .form-group.checkbox-group.full
+                input#activo(type='checkbox' checked=sucursal.activo)
+                label(for='activo' style="margin: 0; cursor: pointer;") Sucursal activa / operativa
 
-        label Nombre:
-        input(type='text' id='nombre' value=sucursal.nombre required)
-        br
-        br
-
-        label Tipo:
-        select(id='tipo' required)
-            option(value='propia' selected=sucursal.tipo === 'propia') Propia
-            option(value='franquicia' selected=sucursal.tipo === 'franquicia') Franquicia
-            option(value='planta' selected=sucursal.tipo === 'planta') Planta
-        br
-        br
-
-        label Dirección:
-        input(type='text' id='direccion' value=sucursal.direccion required)
-        br
-        br
-
-        label Alias:
-        input(type='text' id='alias' value=sucursal.alias required)
-        br
-        br
-
-        label Ciudad:
-        input(type='text' id='ciudad' value=sucursal.ciudad)
-        br
-        br
-
-        label Provincia:
-        input(type='text' id='provincia' value=sucursal.provincia)
-        br
-        br
-
-        label Teléfono:
-        input(type='text' id='telefono' value=sucursal.telefono)
-        br
-        br
-
-        label Email:
-        input(type='email' id='email' value=sucursal.email)
-        br
-        br
-
-        label Responsable:
-        input(type='text' id='responsable' value=sucursal.responsable)
-        br
-        br
-
-        label Activo:
-        input(type='checkbox' id='activo' checked=sucursal.activo)
-        br
-        br
-
-        button(type='submit') Guardar Cambios
-        button(type='button' onclick="window.location.href='/sucursales'") Cancelar
+        .actions(style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;")
+            button.btn-primary(type='submit')
+                svg(xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--surface)")
+                    path(d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4")
+                    polyline(points="16 17 21 12 16 7")
+                    line(x1="21" x2="9" y1="12" y2="12")
+                span Guardar cambios
+            button.btn-secondary(type='button' onclick="window.location.href='/sucursales'") Cancelar
 
     script.
         document.getElementById('formEditar').addEventListener('submit', async (event) => {
             event.preventDefault();
-
             const id = document.getElementById('sucursalId').value;
             const datos = {
                 nombre: document.getElementById('nombre').value,
@@ -86,7 +75,6 @@ block content
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datos)
                 });
-
                 if (response.ok) {
                     alert('Sucursal actualizada');
                     window.location.href = '/sucursales';

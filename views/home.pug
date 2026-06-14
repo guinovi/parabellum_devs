@@ -1,20 +1,61 @@
 extends layout
 
 block content
-    h1 Bienvenido, #{usuario.nombre}
+    section.page-hero
+        p.eyebrow Panel principal
+        h1 Bienvenido, #{usuario.nombre}
+        p Sistema de gestión para La Espiga de Oro S.R.L. Accedé rápido a las operaciones del día.
 
-    h2 Sistema de gestión - "La Espiga de Oro S.R.L"
+    section.card-grid
+        a.card.action-card(href='/pedidos')
+            .card-icon-wrapper
+                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                    rect(width="8" height="4" x="8" y="2" rx="1" ry="1")
+                    path(d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2")
+            strong Ver pedidos
+            span Consultá los pedidos registrados y gestioná su estado.
 
-    br
+        a.card.action-card(href='/pedidos/nuevo')
+            .card-icon-wrapper
+                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                    path(d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z")
+                    path(d="M12 8v8")
+                    path(d="M8 12h8")
+            strong Nuevo pedido
+            span Cargá un pedido desde el catálogo disponible.
 
-    h3 Menú
-    ul
-        li
-            a(href='/pedidos') Ver Pedidos
-        li
-            a(href='/pedidos/nuevo') Nuevo Pedido
         if usuario.rol === 'admin'
-            li
-                a(href='/productos') Ver Productos
-            li
-                a(href='/productos/nuevo') Nuevo Producto
+            a.card.action-card(href='/productos')
+                .card-icon-wrapper
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                        path(d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z")
+                        path(d="m3.3 7 8.7 5 8.7-5")
+                        path(d="M12 22V12")
+                strong Productos
+                span Administrá precios, tipos y disponibilidad.
+
+            a.card.action-card(href='/productos/nuevo')
+                .card-icon-wrapper
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                        path(d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.74z")
+                        line(x1="12" y1="8" x2="12" y2="16")
+                        line(x1="8" y1="12" x2="12" y2="12")
+                strong Nuevo producto
+                span Sumá productos al catálogo de la panadería.
+
+            a.card.action-card(href='/sucursales')
+                .card-icon-wrapper
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                        path(d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7")
+                        path(d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8")
+                        path(d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4")
+                strong Sucursales
+                span Revisá locales propios, franquicias y planta.
+
+            a.card.action-card(href='/sucursales/nuevo')
+                .card-icon-wrapper
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                        path(d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z")
+                        circle(cx="12" cy="10" r="3")
+                strong Nueva sucursal
+                span Registrá una nueva unidad operativa.

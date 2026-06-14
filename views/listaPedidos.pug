@@ -1,49 +1,69 @@
 extends layout
 
 block content
-    h1 Lista de Pedidos
+    section.page-hero
+        p.eyebrow Pedidos
+        h1 Lista de pedidos
+        p Seguimiento de pedidos registrados.
+        .actions
+            a.btn.btn-primary(href='/pedidos/nuevo')
+                svg(xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--surface)")
+                    path(d="M12 5v14")
+                    path(d="M5 12h14")
+                span Crear pedido
 
-    table(border='1')
-        tr
-            th ID
-            th Fecha
-            th Productos
-            th Cantidad
-            th Accion
-
-        each pedido in pedidos
-            tr
-                td #{pedido.id}
-                td #{pedido.fecha}
-                td 
-                    each producto in pedido.productos
-                        span #{producto.id}
-                        br
-                td 
-                    each producto in pedido.productos
-                        span #{producto.cantidad}
-                        br
-                td  
-                    a(href=`/pedidos/editar/${pedido.id}`)
-                    button Editar
-                    button(onclick=`eliminarPedido(${pedido.id})`) Eliminar
-
-    br
-    a(href='/pedidos/nuevo') Crear nuevo pedido
+    .table-wrapper
+        table
+            thead
+                tr
+                    th ID
+                    th Fecha
+                    th Productos
+                    th Cantidad
+                    th Acción
+            tbody
+                each pedido in pedidos
+                    tr
+                        td(data-label="ID") #{pedido.id}
+                        td(data-label="Fecha") #{pedido.fecha}
+                        td(data-label="Productos")
+                            each producto in pedido.productos
+                                span.badge.badge-propia(style="margin-bottom: 2px; display: inline-block;") #{producto.id}
+                                br
+                        td(data-label="Cantidad")
+                            each producto in pedido.productos
+                                span(style="font-weight: 700; color: var(--primary)") #{producto.cantidad} un.
+                                br
+                        td
+                            .actions
+                                a.btn.btn-secondary(href=`/pedidos/editar/${pedido.id}`)
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
+                                        path(d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z")
+                                    span Editar
+                                button.btn-danger(type='button' onclick=`eliminarPedido('${pedido.id}')`)
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
+                                        path(d="M3 6h18")
+                                        path(d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6")
+                                        path(d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2")
+                                    span Eliminar
+                else
+                    tr
+                        td.empty-state(colspan='5') No hay pedidos cargados.
 
     script.
         async function eliminarPedido(id) {
-        const confirmacion = confirm('¿Eliminar pedido?');
-        if (confirmacion) {
+            const confirmacion = confirm('¿Eliminar pedido?');
+            if (!confirmacion) return;
+
             try {
-            const response = await fetch(`/pedidos/${id}`, { method: 'DELETE' });
-            if (response.ok) {
-                window.location.reload();
-            } else {
-                alert('Error al eliminar');
-            }
+                const response = await fetch(`/pedidos/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Error al eliminar');
+                }
             } catch (error) {
-            console.error(error);
+                console.error(error);
+                alert('Error de red al eliminar');
             }
-        }
         }
