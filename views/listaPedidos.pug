@@ -20,6 +20,7 @@ block content
                     th Fecha
                     th Productos
                     th Cantidad
+                    th Estado
                     th Acción
             tbody
                 each pedido in pedidos
@@ -34,12 +35,20 @@ block content
                             each producto in pedido.productos
                                 span(style="font-weight: 700; color: var(--primary)") #{producto.cantidad} un.
                                 br
+                        td(data-label="Estado")
+                            span.badge(class=`badge-${pedido.estado.replace(' ', '-')}`) #{pedido.estado}
                         td
                             .actions
                                 a.btn.btn-secondary(href=`/pedidos/editar/${pedido.id}`)
                                     svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
                                         path(d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z")
                                     span Editar
+                                if usuario.rol === 'admin' && pedido.estado !== 'entregado'
+                                    button.btn-secondary(type='button' onclick=`avanzarEstado('${pedido.id}', '${pedido.estado}')`)
+                                        svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
+                                            path(d="M5 12h14")
+                                            path(d="M12 5l7 7-7 7")
+                                        span Avanzar
                                 button.btn-danger(type='button' onclick=`eliminarPedido('${pedido.id}')`)
                                     svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
                                         path(d="M3 6h18")
@@ -48,9 +57,41 @@ block content
                                     span Eliminar
                 else
                     tr
-                        td.empty-state(colspan='5') No hay pedidos cargados.
+                        td.empty-state(colspan='6') No hay pedidos cargados.
 
     script.
+        const TRANSICIONES = {
+            'pendiente':     'en producción',
+            'en producción': 'despachado',
+            'despachado':    'entregado'
+        };
+
+        async function avanzarEstado(id, estadoActual) {
+            const siguiente = TRANSICIONES[estadoActual];
+            if (!siguiente) return;
+
+            const confirmacion = confirm(`¿Pasar el pedido a "${siguiente}"?`);
+            if (!confirmacion) return;
+
+            try {
+                const response = await fetch(`/pedidos/${id}/estado`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ estado: siguiente })
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Error al actualizar el estado');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de red al actualizar el estado');
+            }
+        }
+
         async function eliminarPedido(id) {
             const confirmacion = confirm('¿Eliminar pedido?');
             if (!confirmacion) return;
@@ -66,4 +107,4 @@ block content
                 console.error(error);
                 alert('Error de red al eliminar');
             }
-        }
+        };

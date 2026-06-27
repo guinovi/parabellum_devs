@@ -1,7 +1,14 @@
-import Pedido from "../models/Pedido.js";
+import Pedido, { ESTADOS_VALIDOS } from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
 import { getNextPedidoId } from "../utils/idGenerator.js";
 
+//Estados para las transiciones de los pedidos
+const TRANSICIONES = {
+    'pendiente':     'en producción',
+    'en producción': 'despachado',
+    'despachado':    'entregado',
+    'entregado':     null
+};
 
 // Leer todos los pedidos (JSON)
 export const getPedidos = async (req, res) => {
@@ -147,5 +154,44 @@ export const deletePedido = async (req, res) => {
         res.status(200).json({ mensaje: "Pedido eliminado correctamente" });
     } catch (error) {
         res.status(500).json({ error: "Error al eliminar el pedido" });
+    }
+};
+
+//Cambio de estado en los pedidos
+export const actualizarEstadoPedido = async (req, res) => {
+    const { estado } = req.body;
+
+    if (!ESTADOS_VALIDOS.includes(estado)) {
+        return res.status(400).json({
+            error: `Estado inválido. Los permitidos son: ${ESTADOS_VALIDOS.join(', ')}`
+        });
+    }
+
+    try {
+        const pedido = await Pedido.findOne({ id: Number(req.params.id) });
+
+        if (!pedido) {
+            return res.status(404).json({ error: "Pedido no encontrado" });
+        }
+
+        const siguienteEstado = TRANSICIONES[pedido.estado];
+
+        if (siguienteEstado === null) {
+            return res.status(400).json({ error: "El pedido ya fue entregado, no puede cambiar de estado." });
+        }
+
+        if (siguienteEstado !== estado) {
+            return res.status(400).json({
+                error: `Transición inválida: '${pedido.estado}' → '${estado}'. El siguiente estado permitido es '${siguienteEstado}'.`
+            });
+        }
+
+        pedido.estado = estado;
+        await pedido.save();
+
+        res.status(200).json({ mensaje: "Estado actualizado correctamente", data: pedido });
+
+    } catch (error) {
+        res.status(500).json({ error: "Error al actualizar el estado" });
     }
 };

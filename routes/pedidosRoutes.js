@@ -7,10 +7,11 @@ import {
     createPedido,
     updatePedido,
     deletePedido,
-    formularioNuevoPedido
+    formularioNuevoPedido,
+    actualizarEstadoPedido
 } from '../controllers/pedidosControllers.js'
 
-import { requiereAuth } from '../middleware/auth.js';
+import { requiereAdmin, requiereAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.get('/pedidos/:id', requiereAuth, getPedidoById);               // Leer p
 router.post('/pedidos', requiereAuth, createPedido);                   // Crear nuevo
 router.put('/pedidos/:id', requiereAuth, updatePedido);                // Modificar
 router.delete('/pedidos/:id', requiereAuth, deletePedido);             // Eliminar
+router.patch('/pedidos/:id/estado', requiereAdmin, actualizarEstadoPedido); // Actualizar estado (transición)
 
 export default router;
