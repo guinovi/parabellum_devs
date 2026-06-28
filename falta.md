@@ -9,7 +9,11 @@ Guía de reparto por módulos para organizar el trabajo y evitar solapamientos:
 - `middleware/`: autenticación, autorización y errores.
 - `scripts/` o `test/`: pruebas y verificaciones de flujo.
 
+
+
 Pendientes de implementación en código:
+
+[ ] unificar las fuentes
 
 ## 1. Pedidos y estados
 - [x] Agregar `estado` al modelo `Pedido`.

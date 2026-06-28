@@ -10,91 +10,76 @@
 - [x] Implementar arquitectura modular y organizada basada en el patrón MVC.
 - [x] Separar claramente responsabilidades: rutas, controladores, modelos y vistas.
 - [x] Utilizar programación asincrónica (`async`/`await`).
-- [ ] Implementar middlewares, manejo de rutas, controladores y manejo centralizado de errores.
+- [x] Implementar middlewares, manejo de rutas, controladores y manejo centralizado de errores.
 - [x] Implementar validaciones simples de entrada/datos.
 - [x] Completar los flujos CRUD con la lógica funcional adecuada.
 - [x] Implementar el control de roles de usuario (crítico).
 - [x] Garantizar consistencia en el manejo de rutas y la conexión entre módulos.
 
 ## 2. Base de Datos
-- [x] Integrar base de datos MongoDB utilizando el ODM Mongoose.
+# Checklist 3° Parcial - Desarrollo Web BackEnd
 
-## 2.1 Seguridad y Autenticación
-- [x] Manejo de sesiones con `express-session` para login, logout y control de acceso.
-- [x] Encriptación de contraseñas con `bcrypt` y comparación segura al iniciar sesión.
-- [ ] JWT: autenticación por token no implementada actualmente.
+## 1. Código (Desarrollo, Arquitectura y Pruebas)
 
-## 3. Requerimientos Funcionales y No Funcionales (Matriz de Categorización)
-- [ ] **Comercial:** Implementar carga y validación de pedidos B2B (Funcional) garantizando alta disponibilidad del portal (No Funcional).
-- [ ] **Stock:** Implementar alertas de stock y trazabilidad (Funcional) asegurando consistencia de datos (No Funcional).
-- [ ] **Producción:** Implementar generación de órdenes de trabajo (Funcional) optimizando la velocidad de procesamiento (No Funcional).
-- [ ] **Logística:** Implementar planificación de rutas de entrega (Funcional) con portabilidad / diseño responsivo (No Funcional).
-- [ ] **Finanzas:** Implementar facturación y control de deuda (Funcional) garantizando seguridad y control de acceso (No Funcional).
+### Arquitectura Base y Base de Datos
+- [x] Desarrollar en Node.js y Express.
+- [x] Aplicar patrón MVC estructurando las carpetas adecuadamente.
+- [x] Configurar rutas dinámicas, asincronía y variables de entorno separadas.
+- [x] Conectar la aplicación a MongoDB Atlas (soporte vía `MONGO_URI`) y/o Mongo local.
+- [x] Construir un modelo de datos coherente con entidades, relaciones y validaciones (Planta, Sucursales, Franquicias, Pedidos, Productos).
 
-## 4. Pruebas (Testing)
-- [ ] Implementar pruebas (manuales o automáticas) cubriendo los aspectos más críticos (Postman/Thunder Client).
-- [ ] Documentar las pruebas indicando: objetivo, procedimiento, y resultados obtenidos (en tablas o carpeta `test/`).
-- [ ] Incluir capturas de respuestas (evitar exceso innecesario).
-- [ ] Preparar la demostración de pruebas para ser grabada (rutas exitosas y casos límite/errores).
+### Lógica, Seguridad y Calidad
 
-## 5. Documentación y Repositorio (PDF y GitHub)
-- [ ] **Profundizar la explicación técnica del backend** (no dejarla incompleta).
-- [ ] **Detallar explícitamente las tareas realizadas por cada integrante** del grupo.
-- [ ] Integrar conceptos de Ingeniería de Software de forma coherente, **sin copiar y pegar literalmente** los documentos de esa materia.
-- [ ] Registrar y justificar cualquier cambio respecto a la iteración anterior o la omisión de temas de la cátedra.
-- [ ] Sintetizar la contextualización (no hacerla excesivamente extensa).
-- [ ] **Declarar explícitamente el uso de IA** (si se usó) de forma crítica, incluyendo referencias y ejemplos de su aplicación.
-- [x] Crear archivo `README.md` con instrucciones técnicas.
-- [ ] Verificar que el link al repositorio sea correcto y que el repositorio contenga el backend funcional.
+### Front-end y experiencia de uso (implementado)
+- [x] Limpiar los estilos inline y centralizar en `public/styles.css`.
+- [x] Unificar botones, alertas y tablas con clases reutilizables.
+- [x] Mejorar el layout responsive de vistas principales (`home`, `login`, listas y formularios).
+- [x] Agregar feedback visual claro para errores, éxito y estados vacíos.
+- [x] Evaluar/usar librería de interfaz o íconos cuando ayuda a la consistencia.
 
-## 6. Video y Defensa
-- [ ] Grabar sesión mostrando código y MongoDB.
-- [ ] **Todos los integrantes deben participar activamente, de forma equitativa y con la cámara encendida.**
-- [ ] Asegurar una **buena calidad de audio y un ritmo de explicación adecuado** (no muy rápido).
-- [ ] Mostrar en el video la ejecución de las pruebas.
-- [ ] Verificar que el link del video esté **bien ubicado en el PDF** y tenga permisos de visualización públicos.
+### Implementaciones específicas
+- [x] Agregar `estado` al modelo `Pedido`.
+- [x] Validar estados permitidos: Pendiente, En Producción, Despachado, Entregado.
+- [x] Lógica de transición de estado en controladores y endpoints para actualizar solo el estado.
 
-## 7. Proceso de Entrega y Administración
-- [ ] Consolidar todo en un único PDF y subirlo a Drive (con links a Git, video y diagramas).
-- [ ] **Entrega individual:** Cada estudiante sube el link del Drive con su propio usuario del campus.
-- [ ] **Condición Administrativa:** Inscribirse en las fechas correspondientes a la promoción o final para que la calificación impacte formalmente en las actas.
-requisitos_parcial_backend_v2.md
-Mostrando requisitos_parcial_backend_v2.md.
+## 2. El Resto (Documentación, Video y Entregables)
 
+### Formato PDF y Estructura
+- [ ] Nombrar archivo PDF: `DSWB_EntregaFinal_2026_Com#_Grupo#_Apellido#_Apellido#`.
+- [ ] Incluir Carátula completa y un Índice.
+- [ ] Unificar todo el contenido en un solo documento.
+- [ ] Insertar en el documento los enlaces a GitHub, Google Drive, la aplicación desplegada y el video de defensa.
 
+### Contenido de la Documentación
+- [ ] Detallar los requerimientos funcionales y no funcionales del sistema.
+- [ ] Incluir diagramas: Casos de uso, Clases, Secuencia y Modelo ER.
+- [ ] Explicar la planificación: estimación de tiempos, uso de tableros e historias de usuario.
+- [ ] Describir el funcionamiento general, los módulos principales y su interacción.
+- [ ] Explicar el Mantenimiento y Evolución (errores corregidos, mejoras en rendimiento/seguridad) respecto a la versión anterior.
+- [ ] Justificar explícitamente la no utilización de temas teóricos o la inclusión de módulos extra.
+- [ ] Documentar el objetivo, procedimiento y resultado de las pruebas realizadas.
+- [ ] Especificar la asignación de roles y las responsabilidades del equipo.
+- [ ] Redactar la conclusión (aprendizajes, dificultades, intereses, puntos a reforzar).
+- [ ] Listar bibliografía y detallar el uso y adaptación de prompts de IA.
+
+### Repositorio y Video
+- [ ] Completar el README en GitHub con instrucciones de uso y dependencias.
+- [ ] Grabar defensa en equipo (ej. Meet/Zoom) mostrando a todos los integrantes explicando su parte del trabajo.
+- [ ] Incluir en el video la demostración práctica de las pruebas (éxitos y manejo de errores).
+- [ ] Configurar los permisos de visualización del video (el archivo de video no debe subirse al campus).
+
+### Gestión en Drive y Campus
+- [ ] Organizar el Drive en carpetas: "Primer entrega", "Segunda Entrega", "Tercera Entrega".
+- [ ] Subir al Drive el código final SIN comprimir, el PDF, el video y la carpeta "materia de trabajo".
+- [ ] Separar la entrega de código en versiones (ej. 1.0 y 1.1) para evidenciar los cambios.
+- [ ] Realizar la entrega individual en el Campus Virtual subiendo una copia del proyecto comprimida (ZIP/RAR).
 
 ---
 
-# V2.0
+## Checklist combinado — Resumen y estado
+- **Lógica de Estado de Pedidos:** Implementar la validación de estados del pedido: *Pendiente, En Producción, Despachado, Entregado*.
+- **Control de roles:** Mantener control de roles (Planta, Sucursal, Franquicia, Admin) y permisos para acciones como cambio de estado.
+- **Tests y evidencias:** Preparar pruebas en Postman/Thunder y documentar resultados en `test/` o en el PDF.
+- **README y despliegue:** Asegurar que `README.md` contenga pasos para instalar, configurar `.env` y desplegar en la nube.
 
-# 📋 Checklist de Cumplimiento: Sistema Panificadora (Auditoría Final)
-
-## 1. Requisitos Funcionales del Negocio
-- [ ] **Portal de Pedidos:** Existe una interfaz/ruta estructurada para que franquicias y sucursales carguen pedidos (eliminando la informalidad).
-- [ ] **Gestión de Estados:** Los pedidos transicionan correctamente por los estados: *Pendiente, En Producción, Despachado, Entregado*.
-- [ ] **Demanda Consolidada:** El sistema agrupa y muestra los productos requeridos por todos los locales para que la Planta planifique la producción.
-- [ ] **Métricas de Tiempo:** El sistema detecta y registra demoras en la entrega de pedidos.
-- [ ] **Facturación Interna:** Generación de información consolidada de los pedidos entregados a Sucursales Propias.
-- [ ] **Royalties:** Sistema o endpoint que calcula el cobro a Franquicias basado en los pedidos despachados/entregados.
-
-## 2. Requisitos Arquitectónicos y Técnicos (Backend)
-- [x] **Stack Tecnológico:** Implementación exclusiva en Node.js y Express.
-- [x] **Arquitectura Modular:** Separación estricta entre Modelos, Rutas, Servicios/Controladores.
-- [ ] **Base de Datos (MongoDB):** Conexión activa a MongoDB Atlas, reemplazando o complementando el almacenamiento en memoria.
-- [x] **Modelado Coherente:** Esquemas definidos con relaciones lógicas (Usuarios/Locales $\rightarrow$ Pedidos $\rightarrow$ Productos) y validación de datos obligatorios.
-- [x] **Autenticación y Autorización:** Acceso restringido implementado (sesiones, etc.) respetando la matriz (Planta vs. Sucursal vs. Franquicia).
-- [ ] **Manejo de Errores:** Middlewares personalizados implementados para capturar errores y evitar caídas del servidor.
-- [x] **Respuestas Estándar:** La API responde en formato JSON con códigos HTTP adecuados (200, 201, 400, 403, 500).
-- [x] **Asincronía:** Uso correcto de promesas o `async/await` en todas las operaciones de I/O y base de datos.
-- [x] **Variables de Entorno:** Configuración sensible y puertos aislados correctamente (ej. `.env`).
-
-## 3. Requisitos Académicos, Entregables y Despliegue
-- [ ] **Mantenimiento y Evolución:** Evidencia (en código o commit) de refactorización, mejoras de rendimiento, seguridad o escalabilidad respecto al sistema anterior.
-- [ ] **Despliegue en la Nube:** La aplicación está productiva y accesible mediante una URL pública.
-- [ ] **Repositorio Seguro:** Código alojado en GitHub sin exponer credenciales (uso correcto de `.gitignore`).
-- [ ] **Documentación (README.md):**
-  - [x] Instrucciones de instalación y uso.
-  - [x] Listado de dependencias.
-  - [ ] Justificación documentada de cualquier módulo extra no visto en clase o decisiones de Ingeniería de Software.
-  - [ ] Análisis explícito del alcance del sistema (si aplica).
-- [ ] **Entrega Final:** Archivo comprimido con el código (sin `node_modules`) listo para subir a la plataforma.
+_Archivo limpio y consolidado (duplicados removidos)._ 
