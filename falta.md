@@ -24,7 +24,7 @@ Pendientes de implementación en código:
 - [ ] Implementar cálculo de royalties para franquicias.
 
 ## 3. Calidad técnica
-- [ ] Agregar middleware centralizado de manejo de errores.
+- [x] Agregar middleware centralizado de manejo de errores.
 - [ ] Revisar y fortalecer validaciones de formularios y endpoints.
 - [ ] Agregar pruebas de código o scripts de prueba para los flujos más críticos.
 
