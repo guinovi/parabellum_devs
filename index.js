@@ -15,6 +15,8 @@ import productosRoutes from './routes/productosRoutes.js';
 import pedidosRoutes from './routes/pedidosRoutes.js';
 import usuariosRoutes from './routes/usuariosRoutes.js';
 import sucursalesRoutes from './routes/sucursalesRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
+import { initSocket } from './services/socket.js';
 
 app.use(express.json());
 // Para manejar datos enviados a través de formularios HTML
@@ -48,6 +50,7 @@ app.use(usuariosRoutes);
 app.use(productosRoutes);
 app.use(sucursalesRoutes);
 app.use(pedidosRoutes);
+app.use(chatRoutes);
 
 // Home: requiere login
 app.get('/', requiereAuth, (req, res) => {
@@ -59,6 +62,8 @@ app.use(errorHandler);
 
 const PORT = 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto http://localhost:${PORT}`)
-})
+});
+
+initSocket(server);
