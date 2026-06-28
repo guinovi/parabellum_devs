@@ -1,7 +1,7 @@
 import Sucursal from '../models/Sucursal.js';
 import { getNextSucursalId } from '../utils/idGenerator.js';
 
-export const getSucursales = async (req, res) => {
+export const getSucursales = async (req, res, next) => {
     try {
         const filtro = { activo: true };
         if (req.query.tipo) {
@@ -10,12 +10,11 @@ export const getSucursales = async (req, res) => {
         const sucursales = await Sucursal.find(filtro).sort({ id: 1 });
         res.status(200).json(sucursales);
     } catch (error) {
-        console.error('Error al obtener sucursales:', error);
-        res.status(500).json({ error: 'Error al obtener las sucursales' });
+        next(error);
     }
 };
 
-export const getSucursalesVista = async (req, res) => {
+export const getSucursalesVista = async (req, res, next) => {
     try {
         const filtro = { activo: true };
         const tipoFiltro = req.query.tipo || '';
@@ -25,12 +24,11 @@ export const getSucursalesVista = async (req, res) => {
         const sucursales = await Sucursal.find(filtro).sort({ id: 1 });
         res.render('listaSucursales', { sucursales, tipoFiltro });
     } catch (error) {
-        console.error('Error al obtener sucursales vista:', error);
-        res.status(500).send({ error: 'Error al obtener las sucursales' });
+        next(error);
     }
 };
 
-export const crearSucursal = async (req, res) => {
+export const crearSucursal = async (req, res, next) => {
     try {
         const {
             nombre,
@@ -69,8 +67,7 @@ export const crearSucursal = async (req, res) => {
 
         res.redirect('/sucursales');
     } catch (error) {
-        console.error('Error al crear sucursal:', error);
-        res.status(500).send('Error al crear la sucursal');
+        next(error);
     }
 };
 
@@ -78,7 +75,7 @@ export const formularioNuevaSucursal = (req, res) => {
     res.render('nuevoSucursal');
 };
 
-export const formularioEditarSucursal = async (req, res) => {
+export const formularioEditarSucursal = async (req, res, next) => {
     try {
         const sucursal = await Sucursal.findOne({ id: Number(req.params.id) });
         if (!sucursal) {
@@ -86,12 +83,11 @@ export const formularioEditarSucursal = async (req, res) => {
         }
         res.render('editarSucursal', { sucursal });
     } catch (error) {
-        console.error('Error al cargar sucursal:', error);
-        res.status(500).send('Error al cargar la sucursal');
+        next(error);
     }
 };
 
-export const getSucursalById = async (req, res) => {
+export const getSucursalById = async (req, res, next) => {
     try {
         const sucursal = await Sucursal.findOne({ id: Number(req.params.id), activo: true });
         if (!sucursal) {
@@ -99,12 +95,11 @@ export const getSucursalById = async (req, res) => {
         }
         res.status(200).json(sucursal);
     } catch (error) {
-        console.error('Error al obtener sucursal:', error);
-        res.status(500).json({ error: 'Error al obtener la sucursal' });
+        next(error);
     }
 };
 
-export const updateSucursal = async (req, res) => {
+export const updateSucursal = async (req, res, next) => {
     try {
         const datos = {
             nombre: req.body.nombre,
@@ -134,12 +129,11 @@ export const updateSucursal = async (req, res) => {
 
         res.status(200).json({ mensaje: 'Actualizado correctamente', data: actualizado });
     } catch (error) {
-        console.error('Error al actualizar sucursal:', error);
-        res.status(500).json({ error: 'Error interno al actualizar la sucursal' });
+        next(error);
     }
 };
 
-export const deleteSucursal = async (req, res) => {
+export const deleteSucursal = async (req, res, next) => {
     try {
         const borrado = await Sucursal.findOneAndUpdate(
             { id: Number(req.params.id) },
@@ -152,7 +146,6 @@ export const deleteSucursal = async (req, res) => {
         }
         res.status(200).json({ mensaje: 'Sucursal desactivada correctamente', data: borrado });
     } catch (error) {
-        console.error('Error al eliminar sucursal:', error);
-        res.status(500).json({ error: 'Error interno al eliminar la sucursal' });
+        next(error);
     }
 };

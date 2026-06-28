@@ -11,39 +11,38 @@ const TRANSICIONES = {
 };
 
 // Leer todos los pedidos (JSON)
-export const getPedidos = async (req, res) => {
+export const getPedidos = async (req, res, next) => {
     try {
         const pedidos = await Pedido.getTodos();
         res.status(200).json(pedidos);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener los pedidos" });
+        next(error);
     }
-
 };
 
 // Leer todos los pedidos (HTML)
-export const getPedidosVista = async (req, res) => {
+export const getPedidosVista = async (req, res, next) => {
     try {
         const pedidos =  await Pedido.find();
         res.render('listaPedidos', { pedidos });
     } catch (error) {
-        res.status(500).send({ error: "Error al obtener los pedidos" });
+        next(error);
     }
 };
 
 // Formulario para crear nuevo pedido
-export const formularioNuevoPedido = async (req, res) => {
+export const formularioNuevoPedido = async (req, res, next) => {
     try {
         const productos = await Producto.find({ activo: true }); //Buscamos directamente los productos activos
         const fechaHoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
         res.render('nuevoPedido', { productos, fechaHoy });
     } catch (error) {
-        res.status(500).send("Error a cargar el formulario");
+        next(error);
     }
 };
 
 // Leer un pedido por ID
-export const getPedidoById = async (req, res) => {
+export const getPedidoById = async (req, res, next) => {
     try {
         const pedido = await Pedido.findOne({ id: Number(req.params.id) });
         if (!pedido) {
@@ -51,12 +50,12 @@ export const getPedidoById = async (req, res) => {
         }
         res.status(200).json(pedido);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener el pedido" });
+        next(error);
     }
 };
 
 // Crear un nuevo pedido
-export const createPedido = async (req, res) => {
+export const createPedido = async (req, res, next) => {
     try {
         const { fecha } = req.body;
         let productos = [];
@@ -106,13 +105,12 @@ export const createPedido = async (req, res) => {
         res.redirect('/pedidos');
 
     } catch (error) {
-        console.log("ATENCIÓN, EL ERROR REAL ES:", error);
-        res.status(500).send("Error al crear el pedido");
+        next(error);
     }
 };
 
 // Actualizar un pedido
-export const updatePedido = async (req, res) => {
+export const updatePedido = async (req, res, next) => {
     try {
         const { productos, fecha } = req.body;
 
@@ -139,12 +137,12 @@ export const updatePedido = async (req, res) => {
 
         res.status(200).json({ mensaje: "Pedido actualizado correctamente", data: actualizado });
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el pedido" });
+        next(error);
     }
 };
 
 // Eliminar un pedido
-export const deletePedido = async (req, res) => {
+export const deletePedido = async (req, res, next) => {
     try {
         const borrado =  await Pedido.findOneAndDelete({ id: Number(req.params.id) });
 
@@ -153,12 +151,12 @@ export const deletePedido = async (req, res) => {
         }
         res.status(200).json({ mensaje: "Pedido eliminado correctamente" });
     } catch (error) {
-        res.status(500).json({ error: "Error al eliminar el pedido" });
+        next(error);
     }
 };
 
 //Cambio de estado en los pedidos
-export const actualizarEstadoPedido = async (req, res) => {
+export const actualizarEstadoPedido = async (req, res, next) => {
     const { estado } = req.body;
 
     if (!ESTADOS_VALIDOS.includes(estado)) {
@@ -192,6 +190,6 @@ export const actualizarEstadoPedido = async (req, res) => {
         res.status(200).json({ mensaje: "Estado actualizado correctamente", data: pedido });
 
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el estado" });
+        next(error);
     }
 };

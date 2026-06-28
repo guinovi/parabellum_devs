@@ -3,6 +3,7 @@ import session from 'express-session'
 import dotenv from 'dotenv';
 import conectarDB from './config/db.js';
 import { requiereAuth } from './middleware/auth.js';
+import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 
 
 dotenv.config();
@@ -52,6 +53,9 @@ app.use(pedidosRoutes);
 app.get('/', requiereAuth, (req, res) => {
     res.render('home');
 });
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const PORT = 3000;
 
