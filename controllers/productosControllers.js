@@ -1,8 +1,22 @@
 import Producto from "../models/Producto.js";
 import { getNextProductoId } from "../utils/idGenerator.js";
 
-//Crear producto
+// //Tipos de productos
+// const TIPOS_PRODUCTOS = {
+//     'Producto terminado': [
+//         'Panadería dulce',
+//         'Panes',
+//         'Masas finas',
+//         'Tortas,tartas y postres',
+//         'Sandwiches',
+//     ],
+//     'Producto congelado': [
+//         'Panadería dulce',
+//         'Panes',
+//     ]
+// };
 
+//Crear producto
 export const createProducto = async (req, res, next) => {
     try {
         const { nombre, precio, tipo, activo } = req.body;
