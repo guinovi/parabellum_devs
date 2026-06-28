@@ -45,6 +45,13 @@ html(lang='es')
                                     path(d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8")
                                     path(d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4")
                                 span Sucursales
+                            a.nav-link(href='/stock')
+                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                                    path(d="M3 3h18")
+                                    path(d="M3 9h18")
+                                    path(d="M3 15h18")
+                                    path(d="M3 21h18")
+                                span Stock
                         span.user-pill
                             svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="stroke: var(--primary)")
                                 path(d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2")
@@ -63,3 +70,7 @@ html(lang='es')
 
         footer.footer
             p &copy; 2026 Parabellum Devs · Todos los derechos reservados.
+
+        include chat-widget.pug
+        script(src='/socket.io/socket.io.js')
+        script(src='/chat.js')

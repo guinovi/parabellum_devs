@@ -25,6 +25,11 @@ block content
                 select#subcategoria(name='subcategoria', required)
                     each sub in (tipos[producto.categoria] || [])
                         option(value=sub, selected=(sub === producto.subcategoria)) #{sub}
+            .form-group
+                label(for='unidad') Unidad de venta
+                select#unidad(name='unidad', required)
+                    option(value='unidad', selected=(producto.unidad === 'unidad')) Por unidad
+                    option(value='kg', selected=(producto.unidad === 'kg')) Por kg
             .form-group.checkbox-group
                 input#activo(type='checkbox' checked=producto.activo)
                 label(for='activo' style="margin: 0; cursor: pointer;") Producto disponible para pedidos
@@ -66,6 +71,7 @@ block content
                 precio: document.getElementById('precio').value,
                 categoria: document.getElementById('categoria').value,
                 subcategoria: document.getElementById('subcategoria').value,
+                unidad: document.getElementById('unidad').value,
                 activo: document.getElementById('activo').checked
             };
 

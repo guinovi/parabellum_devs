@@ -24,6 +24,11 @@ block content
                 label(for='subcategoria') Subcategoría
                 select#subcategoria(name='subcategoria', required)
                     option(value='', disabled, selected) Primero seleccioná una categoría
+            .form-group
+                label(for='unidad') Unidad de venta
+                select#unidad(name='unidad', required)
+                    option(value='unidad') Por unidad
+                    option(value='kg') Por kg
             .form-group.checkbox-group
                 input#activo(type='checkbox', name='activo' checked)
                 label(for='activo' style="margin: 0; cursor: pointer;") Producto disponible para pedidos
