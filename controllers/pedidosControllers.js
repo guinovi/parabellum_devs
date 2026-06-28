@@ -67,6 +67,20 @@ export const formularioNuevoPedido = async (req, res, next) => {
     }
 };
 
+// Formulario para editar un pedido
+export const formularioEditarPedido = async (req, res, next) => {
+    try {
+        const pedido = await Pedido.findOne({ id: Number(req.params.id) });
+        if (!pedido) {
+            return res.status(404).json({ error: "Pedido no encontrado" }); // o render error
+        }
+        const productos = await Producto.find({ activo: true });
+        res.render('editarPedidos', { pedido, productos });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Leer un pedido por ID
 export const getPedidoById = async (req, res, next) => {
     try {
