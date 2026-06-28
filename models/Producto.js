@@ -6,6 +6,7 @@ const productoSchema = new mongoose.Schema({
     precio: { type: Number, required: true },
     categoria: { type: String, required: true },
     subcategoria: { type: String, required: true },
+    unidad: { type: String, enum: ['unidad', 'kg'], required: true, default: 'unidad' },
     activo: { type: Boolean, default: true }
 });
 
