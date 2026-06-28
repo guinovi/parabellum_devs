@@ -21,11 +21,13 @@ block content
                     th Productos
                     th Cantidad
                     th Estado
+                    th Último movimiento
                     if usuario.rol === 'admin'
                         th Creado por
                     th Acción
             tbody
                 each pedido in pedidos
+                    - const ultimaFecha = pedido.fechaEntrega || pedido.fechaDespacho || pedido.fechaProduccion || pedido.fechaCreacion
                     tr
                         td(data-label="ID") #{pedido.id}
                         td(data-label="Fecha") #{pedido.fecha}
@@ -39,6 +41,11 @@ block content
                                 br
                         td(data-label="Estado")
                             span.badge(class=`badge-${pedido.estado.replace(' ', '-')}`) #{pedido.estado}
+                        td(data-label="Último movimiento")
+                            if ultimaFecha
+                                | #{new Date(ultimaFecha).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            else
+                                | —
                         if usuario.rol === 'admin'
                             td(data-label="Creado por") #{pedido.creadoPor}
                         td
@@ -62,7 +69,7 @@ block content
                                         span Eliminar
                 else
                     tr
-                        td.empty-state(colspan='6') No hay pedidos cargados.
+                        td.empty-state(colspan='7') No hay pedidos cargados.
 
     script.
         const TRANSICIONES = {
