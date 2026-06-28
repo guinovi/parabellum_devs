@@ -21,6 +21,8 @@ block content
                     th Productos
                     th Cantidad
                     th Estado
+                    if usuario.rol === 'admin'
+                        th Creado por
                     th Acción
             tbody
                 each pedido in pedidos
@@ -37,6 +39,8 @@ block content
                                 br
                         td(data-label="Estado")
                             span.badge(class=`badge-${pedido.estado.replace(' ', '-')}`) #{pedido.estado}
+                        if usuario.rol === 'admin'
+                            td(data-label="Creado por") #{pedido.creadoPor}
                         td
                             .actions
                                 a.btn.btn-secondary(href=`/pedidos/editar/${pedido.id}`)
@@ -49,12 +53,13 @@ block content
                                             path(d="M5 12h14")
                                             path(d="M12 5l7 7-7 7")
                                         span Avanzar
-                                button.btn-danger(type='button' onclick=`eliminarPedido('${pedido.id}')`)
-                                    svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
-                                        path(d="M3 6h18")
-                                        path(d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6")
-                                        path(d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2")
-                                    span Eliminar
+                                if usuario.rol === 'admin'
+                                    button.btn-danger(type='button' onclick=`eliminarPedido('${pedido.id}')`)
+                                        svg(xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round")
+                                            path(d="M3 6h18")
+                                            path(d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6")
+                                            path(d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2")
+                                        span Eliminar
                 else
                     tr
                         td.empty-state(colspan='6') No hay pedidos cargados.

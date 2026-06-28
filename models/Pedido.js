@@ -10,7 +10,8 @@ const pedidoSchema = new mongoose.Schema({
         cantidad: { type: Number, required: true }
     }], //array de productos con su id y cantidad
     fecha: { type: String, required: true },
-    estado: { type: String, required: true, enum: ESTADOS_VALIDOS, default: 'pendiente' }
+    estado: { type: String, required: true, enum: ESTADOS_VALIDOS, default: 'pendiente' },
+    creadoPor: { type: String, required: true }  // ← alias del usuario que creó el pedido
 });
 
 export { ESTADOS_VALIDOS };

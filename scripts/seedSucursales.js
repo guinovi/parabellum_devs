@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import conectarDB from '../config/db.js';
 import Sucursal from '../models/Sucursal.js';
 import { getNextSucursalId } from '../utils/idGenerator.js';

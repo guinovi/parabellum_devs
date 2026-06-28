@@ -23,7 +23,13 @@ export const getPedidos = async (req, res, next) => {
 // Leer todos los pedidos (HTML)
 export const getPedidosVista = async (req, res, next) => {
     try {
-        const pedidos = await Pedido.find().sort({ id: 1 });
+        const usuario = req.session.usuario;
+
+        const filtro = usuario.rol === 'admin'
+            ? {}
+            : { creadoPor: usuario.alias };
+
+        const pedidos = await Pedido.find(filtro).sort({ id: 1 });
         res.render('listaPedidos', { pedidos });
     } catch (error) {
         next(error);
@@ -98,7 +104,8 @@ export const createPedido = async (req, res, next) => {
         await Pedido.create({
             id: nuevoId,
             productos,
-            fecha
+            fecha,
+            creadoPor: req.session.usuario.alias,
         });
 
         // Redirigir a la lista de pedidos
