@@ -18,6 +18,7 @@ import sucursalesRoutes from './routes/sucursalesRoutes.js';
 import stockRoutes from './routes/stockRoutes.js'; 
 import chatRoutes from './routes/chatRoutes.js';
 import { initSocket } from './services/socket.js';
+>>>>>>>>> Temporary merge branch 2
 
 app.use(express.json());
 // Para manejar datos enviados a través de formularios HTML
@@ -51,8 +52,8 @@ app.use(usuariosRoutes);
 app.use(productosRoutes);
 app.use(sucursalesRoutes);
 app.use(pedidosRoutes);
-app.use(stockRoutes);
 app.use(chatRoutes);
+app.use(stockRoutes);
 
 // Home: requiere login
 app.get('/', requiereAuth, (req, res) => {
