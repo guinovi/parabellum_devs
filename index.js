@@ -15,6 +15,8 @@ import productosRoutes from './routes/productosRoutes.js';
 import pedidosRoutes from './routes/pedidosRoutes.js';
 import usuariosRoutes from './routes/usuariosRoutes.js';
 import sucursalesRoutes from './routes/sucursalesRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
+import { initSocket } from './services/socket.js';
 import stockRoutes from './routes/stockRoutes.js'; 
 import chatRoutes from './routes/chatRoutes.js';
 import { initSocket } from './services/socket.js';
