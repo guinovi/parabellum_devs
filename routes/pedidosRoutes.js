@@ -8,6 +8,7 @@ import {
     updatePedido,
     deletePedido,
     formularioNuevoPedido,
+    formularioEditarPedido,
     actualizarEstadoPedido
 } from '../controllers/pedidosControllers.js';
 
@@ -19,6 +20,7 @@ const router = express.Router();
 router.get('/pedidos', requiereAuth, getPedidosVista);                    // Leer todos (HTML)
 router.get('/api/pedidos', requiereAuth, getPedidos);                     // Leer todos (JSON)
 router.get('/pedidos/nuevo', requiereAuth, formularioNuevoPedido);        // Formulario para crear nuevo pedido
+router.get('/pedidos/editar/:id', requiereAuth, formularioEditarPedido);  // Formulario para editar un pedido
 router.get('/pedidos/:id', requiereAuth, getPedidoById);                  // Leer por ID
 router.post('/pedidos', requiereAuth, createPedido);                      // Crear nuevo
 router.put('/pedidos/:id', requiereAuth, updatePedido);                   // Modificar
