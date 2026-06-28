@@ -16,8 +16,15 @@ block content
                 label(for='precio') Precio ($)
                 input#precio(type='number' value=producto.precio required)
             .form-group
-                label(for='tipo') Tipo / Categoría
-                input#tipo(type='text' value=producto.tipo required)
+                label(for='categoria') Categoría
+                select#categoria(name='categoria', required, onchange='actualizarSubcategorias()')
+                    each cat in Object.keys(tipos)
+                        option(value=cat, selected=(cat === producto.categoria)) #{cat}
+            .form-group
+                label(for='subcategoria') Subcategoría
+                select#subcategoria(name='subcategoria', required)
+                    each sub in (tipos[producto.categoria] || [])
+                        option(value=sub, selected=(sub === producto.subcategoria)) #{sub}
             .form-group.checkbox-group
                 input#activo(type='checkbox' checked=producto.activo)
                 label(for='activo' style="margin: 0; cursor: pointer;") Producto disponible para pedidos
@@ -32,13 +39,33 @@ block content
             button.btn-secondary(type='button' onclick="window.location.href='/productos'") Cancelar
 
     script.
+        const TIPOS = !{JSON.stringify(tipos)};
+
+        function actualizarSubcategorias() {
+            const categoria = document.getElementById('categoria').value;
+            const selectSub = document.getElementById('subcategoria');
+            const subcategoriaActual = '#{producto.subcategoria}';
+            selectSub.innerHTML = '';
+
+            if (!categoria || !TIPOS[categoria]) return;
+
+            TIPOS[categoria].forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub;
+                option.textContent = sub;
+                if (sub === subcategoriaActual) option.selected = true;
+                selectSub.appendChild(option);
+            });
+        }
+
         document.getElementById('formEditar').addEventListener('submit', async (event) => {
             event.preventDefault();
             const id = document.getElementById('productoId').value;
             const datos = {
                 nombre: document.getElementById('nombre').value,
                 precio: document.getElementById('precio').value,
-                tipo: document.getElementById('tipo').value,
+                categoria: document.getElementById('categoria').value,
+                subcategoria: document.getElementById('subcategoria').value,
                 activo: document.getElementById('activo').checked
             };
 

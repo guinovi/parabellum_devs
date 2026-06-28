@@ -1,68 +1,61 @@
 import Producto from "../models/Producto.js";
 import { getNextProductoId } from "../utils/idGenerator.js";
 
-// //Tipos de productos
-// const TIPOS_PRODUCTOS = {
-//     'Producto terminado': [
-//         'Panadería dulce',
-//         'Panes',
-//         'Masas finas',
-//         'Tortas,tartas y postres',
-//         'Sandwiches',
-//     ],
-//     'Producto congelado': [
-//         'Panadería dulce',
-//         'Panes',
-//     ]
-// };
+//Tipos de productos
+const TIPOS_PRODUCTOS = {
+    'Producto terminado': [
+        'Panadería dulce',
+        'Panes',
+        'Masas finas',
+        'Tortas,tartas y postres',
+        'Sandwiches',
+    ],
+    'Producto congelado': [
+        'Panadería dulce',
+        'Panes',
+    ]
+};
 
 //Crear producto
 export const createProducto = async (req, res, next) => {
     try {
-        const { nombre, precio, tipo, activo } = req.body;
+        const { nombre, precio, categoria, subcategoria, activo } = req.body;
 
-        // convertir checkbox a true/false
         const activoBoolean = activo === 'on';
 
-        //validamos
-        if (!nombre || !precio || !tipo) {
+        if (!nombre || !precio || !categoria || !subcategoria) {
             return res.status(400).json({ error: "Faltan datos obligatorios" });
         }
 
-        // Obtener siguiente ID autoincremental
         const nuevoId = await getNextProductoId();
-
-        //usamos Mongoose para crear el producto en la base de datos
 
         await Producto.create({
             id: nuevoId,
             nombre,
             precio: Number(precio),
-            tipo,
+            categoria,
+            subcategoria,
             activo: activoBoolean
         });
 
-        // volver a la lista de productos
         res.redirect('/productos');
-
     } catch (error) {
         next(error);
     }
 };
 
+
 export const formularioNuevoProducto = (req, res) => {
-    res.render('nuevoProducto');
+    res.render('nuevoProducto', { tipos: TIPOS_PRODUCTOS });
 };
 
 export const formularioEditarProducto = async (req, res, next) => {
     try {
-        const producto = await Producto.findOne({
-            id: Number(req.params.id)
-        });
+        const producto = await Producto.findOne({ id: Number(req.params.id) });
         if (!producto) {
             return res.status(404).send('Producto no encontrado');
         }
-        res.render('editarProducto', { producto });
+        res.render('editarProducto', { producto, tipos: TIPOS_PRODUCTOS });
     } catch (error) {
         next(error);
     }
