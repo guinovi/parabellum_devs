@@ -2,18 +2,18 @@ import Pedido, { ESTADOS_VALIDOS } from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
 import { getNextPedidoId } from "../utils/idGenerator.js";
 
-//Estados para las transiciones de los pedidos
+// Estados para las transiciones de los pedidos
 const TRANSICIONES = {
-    'pendiente':     'en producción',
+    'pendiente': 'en producción',
     'en producción': 'despachado',
-    'despachado':    'entregado',
-    'entregado':     null
+    'despachado': 'entregado',
+    'entregado': null
 };
 
 // Leer todos los pedidos (JSON)
 export const getPedidos = async (req, res, next) => {
     try {
-        const pedidos = await Pedido.getTodos();
+        const pedidos = await Pedido.find().sort({ id: 1 });
         res.status(200).json(pedidos);
     } catch (error) {
         next(error);
@@ -23,7 +23,7 @@ export const getPedidos = async (req, res, next) => {
 // Leer todos los pedidos (HTML)
 export const getPedidosVista = async (req, res, next) => {
     try {
-        const pedidos =  await Pedido.find();
+        const pedidos = await Pedido.find().sort({ id: 1 });
         res.render('listaPedidos', { pedidos });
     } catch (error) {
         next(error);
@@ -144,7 +144,7 @@ export const updatePedido = async (req, res, next) => {
 // Eliminar un pedido
 export const deletePedido = async (req, res, next) => {
     try {
-        const borrado =  await Pedido.findOneAndDelete({ id: Number(req.params.id) });
+        const borrado = await Pedido.findOneAndDelete({ id: Number(req.params.id) });
 
         if (!borrado) {
             return res.status(404).json({ error: "Pedido no encontrado" });
@@ -155,7 +155,7 @@ export const deletePedido = async (req, res, next) => {
     }
 };
 
-//Cambio de estado en los pedidos
+// Cambio de estado en los pedidos
 export const actualizarEstadoPedido = async (req, res, next) => {
     const { estado } = req.body;
 
@@ -173,6 +173,10 @@ export const actualizarEstadoPedido = async (req, res, next) => {
         }
 
         const siguienteEstado = TRANSICIONES[pedido.estado];
+
+        if (siguienteEstado === undefined) {
+            return res.status(400).json({ error: `El estado actual '${pedido.estado}' no es válido.` });
+        }
 
         if (siguienteEstado === null) {
             return res.status(400).json({ error: "El pedido ya fue entregado, no puede cambiar de estado." });

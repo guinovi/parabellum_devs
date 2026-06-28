@@ -12,10 +12,10 @@ Guía de reparto por módulos para organizar el trabajo y evitar solapamientos:
 Pendientes de implementación en código:
 
 ## 1. Pedidos y estados
-- [ ] Agregar `estado` al modelo `Pedido`.
-- [ ] Validar estados permitidos: pendiente, en producción, despachado y entregado.
-- [ ] Crear la lógica de transición de estado en el controlador.
-- [ ] Exponer endpoints para actualizar solo el estado del pedido.
+- [x] Agregar `estado` al modelo `Pedido`.
+- [x] Validar estados permitidos: pendiente, en producción, despachado y entregado.
+- [x] Crear la lógica de transición de estado en el controlador.
+- [x] Exponer endpoints para actualizar solo el estado del pedido.
 
 ## 2. Operación del negocio
 - [ ] Implementar demanda consolidada de productos por sucursal/local.
@@ -25,8 +25,7 @@ Pendientes de implementación en código:
 
 ## 3. Calidad técnica
 - [x] Agregar middleware centralizado de manejo de errores.
-- [ ] Revisar y fortalecer validaciones de formularios y endpoints.
-- [ ] Agregar pruebas de código o scripts de prueba para los flujos más críticos.
+
 
 ## 4. Front-end y experiencia de uso
 - [x] Limpiar los estilos inline que queden en las vistas y dejar todo centralizado en `public/styles.css`.
