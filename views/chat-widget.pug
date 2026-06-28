@@ -1,0 +1,28 @@
+if usuario
+  #chat-widget.chat-widget
+    button#chat-toggle.chat-toggle(aria-label='Abrir chat')
+      svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+        path(d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z")
+      span.chat-notification-dot
+
+    #chat-panel.chat-panel
+      .chat-header
+        .chat-header-info
+          .chat-header-icon 💬
+          .chat-header-text
+            h3 Chat de consultas
+            p.chat-header-subtitle Asistente virtual de pedidos
+        button#chat-close.chat-close(aria-label='Cerrar chat')
+          svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+            line(x1="18" y1="6" x2="6" y2="18")
+            line(x1="6" y1="6" x2="18" y2="18")
+
+      #chat-messages.chat-messages
+        .chat-loading Conectando...
+
+      .chat-input-area
+        textarea#chat-input.chat-input(placeholder='Escribí tu consulta sobre pedidos...', rows='1')
+        button#chat-send.chat-send(aria-label='Enviar mensaje')
+          svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+            line(x1="22" y1="2" x2="11" y2="13")
+            polygon(points="22 2 15 22 11 13 2 9 22 2")
