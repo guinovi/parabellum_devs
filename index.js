@@ -17,6 +17,7 @@ import usuariosRoutes from './routes/usuariosRoutes.js';
 import sucursalesRoutes from './routes/sucursalesRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { initSocket } from './services/socket.js';
+import stockRoutes from './routes/stockRoutes.js'; 
 
 app.use(express.json());
 // Para manejar datos enviados a través de formularios HTML
@@ -51,6 +52,7 @@ app.use(productosRoutes);
 app.use(sucursalesRoutes);
 app.use(pedidosRoutes);
 app.use(chatRoutes);
+app.use(stockRoutes);
 
 // Home: requiere login
 app.get('/', requiereAuth, (req, res) => {

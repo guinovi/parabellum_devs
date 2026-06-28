@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    section.page-hero
+        p.eyebrow Stock
+        h1 Cargar stock
+        p Agregá cantidad disponible a un producto.
+
+    form.form-card(method='POST', action='/stock/cargar')
+        .form-grid
+            .form-group
+                label(for='productoId') Producto
+                select#productoId(name='productoId', required)
+                    option(value='', disabled, selected) Seleccioná un producto
+                    each producto in productos
+                        option(value=producto.id) #{producto.nombre} (#{producto.unidad})
+            .form-group
+                label(for='cantidad') Cantidad a agregar
+                input#cantidad(type='number', name='cantidad', required, min='0', step='0.01', placeholder='Ej. 100')
+
+        .actions(style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;")
+            button.btn-primary(type='submit')
+                svg(xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--surface)")
+                    path(d="M5 12h14")
+                    path(d="M12 5v14")
+                span Guardar
+            a.btn.btn-secondary(href='/stock') Cancelar

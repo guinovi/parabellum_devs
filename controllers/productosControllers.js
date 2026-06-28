@@ -35,6 +35,7 @@ export const createProducto = async (req, res, next) => {
             precio: Number(precio),
             categoria,
             subcategoria,
+            unidad,
             activo: activoBoolean
         });
 
