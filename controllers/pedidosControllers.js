@@ -1,6 +1,7 @@
 import Pedido, { ESTADOS_VALIDOS } from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
 import { getNextPedidoId } from "../utils/idGenerator.js";
+import { descontarStock } from "./stockControllers.js";  // ← agregar
 
 // Estados para las transiciones de los pedidos
 const TRANSICIONES = {
@@ -48,7 +49,19 @@ export const formularioNuevoPedido = async (req, res, next) => {
     try {
         const productos = await Producto.find({ activo: true });
         const fechaHoy = new Date().toISOString().split('T')[0];
-        res.render('nuevoPedido', { productos, fechaHoy });
+
+        const Stock = (await import('../models/Stock.js')).default;
+        const stocks = await Stock.find();
+        const stockMap = {};
+        stocks.forEach(s => {
+            stockMap[s.producto] = {
+                cantidad: s.cantidad,
+                minimo: s.stockMinimo,
+                unidad: s.unidad
+            };
+        });
+
+        res.render('nuevoPedido', { productos, fechaHoy, stockMap });
     } catch (error) {
         next(error);
     }
@@ -94,6 +107,13 @@ export const createPedido = async (req, res, next) => {
 
         if (productos.length === 0) {
             return res.status(400).send("Debe seleccionar al menos un producto");
+        }
+
+        // Validar y descontar stock antes de crear el pedido
+        try {
+            await descontarStock(productos);
+        } catch (stockError) {
+            return res.status(400).send(stockError.message);
         }
 
         const nuevoId = await getNextPedidoId();
@@ -191,7 +211,6 @@ export const actualizarEstadoPedido = async (req, res, next) => {
             });
         }
 
-        // Actualizar estado y guardar fecha correspondiente
         pedido.estado = estado;
         if (FECHAS_ESTADO[estado]) {
             pedido[FECHAS_ESTADO[estado]] = new Date();

@@ -15,6 +15,7 @@ import productosRoutes from './routes/productosRoutes.js';
 import pedidosRoutes from './routes/pedidosRoutes.js';
 import usuariosRoutes from './routes/usuariosRoutes.js';
 import sucursalesRoutes from './routes/sucursalesRoutes.js';
+import stockRoutes from './routes/stockRoutes.js'; 
 import chatRoutes from './routes/chatRoutes.js';
 import { initSocket } from './services/socket.js';
 
@@ -50,6 +51,7 @@ app.use(usuariosRoutes);
 app.use(productosRoutes);
 app.use(sucursalesRoutes);
 app.use(pedidosRoutes);
+app.use(stockRoutes);
 app.use(chatRoutes);
 
 // Home: requiere login
