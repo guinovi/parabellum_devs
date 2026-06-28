@@ -5,7 +5,8 @@ const usuarioSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     nombre: { type: String, required: true },
-    rol: { type: String, enum: ['admin', 'franquicia'], required: true }
+    rol: { type: String, enum: ['admin', 'franquicia', 'sucursal'], required: true },
+    alias: { type: String, default: null }, // null para admin
 });
 
 usuarioSchema.pre('save', async function() {

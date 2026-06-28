@@ -10,6 +10,13 @@ const TRANSICIONES = {
     'entregado': null
 };
 
+// Mapeo de estado a campo de fecha
+const FECHAS_ESTADO = {
+    'en producción': 'fechaProduccion',
+    'despachado': 'fechaDespacho',
+    'entregado': 'fechaEntrega'
+};
+
 // Leer todos los pedidos (JSON)
 export const getPedidos = async (req, res, next) => {
     try {
@@ -23,7 +30,13 @@ export const getPedidos = async (req, res, next) => {
 // Leer todos los pedidos (HTML)
 export const getPedidosVista = async (req, res, next) => {
     try {
-        const pedidos = await Pedido.find().sort({ id: 1 });
+        const usuario = req.session.usuario;
+
+        const filtro = usuario.rol === 'admin'
+            ? {}
+            : { creadoPor: usuario.alias };
+
+        const pedidos = await Pedido.find(filtro).sort({ id: 1 });
         res.render('listaPedidos', { pedidos });
     } catch (error) {
         next(error);
@@ -33,8 +46,8 @@ export const getPedidosVista = async (req, res, next) => {
 // Formulario para crear nuevo pedido
 export const formularioNuevoPedido = async (req, res, next) => {
     try {
-        const productos = await Producto.find({ activo: true }); //Buscamos directamente los productos activos
-        const fechaHoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        const productos = await Producto.find({ activo: true });
+        const fechaHoy = new Date().toISOString().split('T')[0];
         res.render('nuevoPedido', { productos, fechaHoy });
     } catch (error) {
         next(error);
@@ -60,21 +73,14 @@ export const createPedido = async (req, res, next) => {
         const { fecha } = req.body;
         let productos = [];
 
-        // Validaciones básicas
         if (!fecha) {
             return res.status(400).send("Faltan datos obligatorios: fecha");
         }
 
-        // Si viene desde Thunder Client (JSON)
         if (req.body.productos) {
             productos = req.body.productos;
-        }
-
-        else {
-
-            // Construir array de productos desde los campos del formulario
+        } else {
             const productosDB = await Producto.find({ activo: true });
-
             for (let producto of productosDB) {
                 const cantidad = req.body[`cantidad_${producto.id}`];
                 if (cantidad && Number(cantidad) > 0) {
@@ -86,22 +92,20 @@ export const createPedido = async (req, res, next) => {
             }
         }
 
-        // Validar que haya al menos un producto
         if (productos.length === 0) {
             return res.status(400).send("Debe seleccionar al menos un producto");
         }
 
-        // Obtener siguiente ID autoincremental
         const nuevoId = await getNextPedidoId();
 
-        //guardamos en mongo db
         await Pedido.create({
             id: nuevoId,
             productos,
-            fecha
+            fecha,
+            creadoPor: req.session.usuario.alias,
+            fechaCreacion: new Date()
         });
 
-        // Redirigir a la lista de pedidos
         res.redirect('/pedidos');
 
     } catch (error) {
@@ -114,7 +118,6 @@ export const updatePedido = async (req, res, next) => {
     try {
         const { productos, fecha } = req.body;
 
-        // Si se actualiza productos, validar que existan
         if (productos) {
             const productosDB = await Producto.find();
             for (let item of productos) {
@@ -188,7 +191,11 @@ export const actualizarEstadoPedido = async (req, res, next) => {
             });
         }
 
+        // Actualizar estado y guardar fecha correspondiente
         pedido.estado = estado;
+        if (FECHAS_ESTADO[estado]) {
+            pedido[FECHAS_ESTADO[estado]] = new Date();
+        }
         await pedido.save();
 
         res.status(200).json({ mensaje: "Estado actualizado correctamente", data: pedido });

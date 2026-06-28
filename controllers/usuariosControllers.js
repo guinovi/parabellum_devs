@@ -40,7 +40,8 @@ export const loginUsuario = async (req, res, next) => {
         req.session.usuario = {
             email: usuario.email,
             nombre: usuario.nombre,
-            rol: usuario.rol
+            rol: usuario.rol,
+            alias: usuario.alias || null
         };
 
         res.redirect('/');

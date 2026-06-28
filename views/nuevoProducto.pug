@@ -15,8 +15,15 @@ block content
                 label(for='precio') Precio ($)
                 input#precio(type='number', name='precio', required, placeholder='Ej. 1200')
             .form-group
-                label(for='tipo') Tipo / Categoría
-                input#tipo(type='text', name='tipo', required, placeholder='Ej. Panificados')
+                label(for='categoria') Categoría
+                select#categoria(name='categoria', required, onchange='actualizarSubcategorias()')
+                    option(value='', disabled, selected) Seleccioná una categoría
+                    each cat in Object.keys(tipos)
+                        option(value=cat) #{cat}
+            .form-group
+                label(for='subcategoria') Subcategoría
+                select#subcategoria(name='subcategoria', required)
+                    option(value='', disabled, selected) Primero seleccioná una categoría
             .form-group.checkbox-group
                 input#activo(type='checkbox', name='activo' checked)
                 label(for='activo' style="margin: 0; cursor: pointer;") Producto disponible para pedidos
@@ -28,3 +35,24 @@ block content
                     path(d="M12 5v14")
                 span Crear producto
             a.btn.btn-secondary(href='/productos') Cancelar
+
+    script.
+        const TIPOS = !{JSON.stringify(tipos)};
+
+        function actualizarSubcategorias() {
+            const categoria = document.getElementById('categoria').value;
+            const selectSub = document.getElementById('subcategoria');
+            selectSub.innerHTML = '';
+
+            if (!categoria || !TIPOS[categoria]) {
+                selectSub.innerHTML = '<option value="" disabled selected>Primero seleccioná una categoría</option>';
+                return;
+            }
+
+            TIPOS[categoria].forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub;
+                option.textContent = sub;
+                selectSub.appendChild(option);
+            });
+        }
