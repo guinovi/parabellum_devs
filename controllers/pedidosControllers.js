@@ -231,7 +231,18 @@ export const actualizarEstadoPedido = async (req, res, next) => {
         }
         await pedido.save();
 
+        // Generar facturación interna o royalty al entregar el pedido
+        if (estado === 'entregado') {
+            try {
+                const { generarFacturacionParaPedido } = await import("./facturacionControllers.js");
+                await generarFacturacionParaPedido(pedido);
+            } catch (facError) {
+                console.error("Error al generar la facturación:", facError);
+            }
+        }
+
         res.status(200).json({ mensaje: "Estado actualizado correctamente", data: pedido });
+
 
     } catch (error) {
         next(error);

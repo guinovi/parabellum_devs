@@ -51,3 +51,19 @@ export const getNextSucursalId = async () => {
         throw error;
     }
 };
+
+export const getNextFacturacionId = async () => {
+    try {
+        const Facturacion = (await import("../models/Facturacion.js")).default;
+        const ultimaFacturacion = await Facturacion.findOne()
+            .sort({ id: -1 })
+            .limit(1)
+            .lean();
+        
+        return ultimaFacturacion ? ultimaFacturacion.id + 1 : 1;
+    } catch (error) {
+        console.error("Error al obtener siguiente ID de facturacion:", error);
+        throw error;
+    }
+};
+

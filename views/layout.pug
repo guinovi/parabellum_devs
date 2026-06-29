@@ -26,6 +26,12 @@ html(lang='es')
                                 rect(width="8" height="4" x="8" y="2" rx="1" ry="1")
                                 path(d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2")
                             span Pedidos
+                        a.nav-link(href='/facturacion')
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                                line(x1="12" y1="1" x2="12" y2="23")
+                                path(d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6")
+                            span Facturación
+
                         if usuario.rol !== 'admin'
                             a.nav-link(href='/pedidos/nuevo')
                                 svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
