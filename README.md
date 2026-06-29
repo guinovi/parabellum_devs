@@ -1,17 +1,31 @@
 # ParabellumDEVS
 
-Backend desarrollado en Node.js con Express y MongoDB para gestionar una panificadora: productos, sucursales, pedidos, stock y usuarios.
+Backend escolar desarrollado en Node.js con Express y MongoDB para gestionar una panificadora: productos, sucursales, pedidos, stock y usuarios.
 
 ## Tecnologías
 
-- Node.js
+- Node.js 18+
 - Express 5
 - MongoDB con Mongoose
 - Pug para vistas
-- express-session para autenticación de sesión
+- express-session para sesiones
 - bcrypt para hash de contraseñas
 - dotenv para variables de entorno
-- Socket.io para funcionalidades de chat en tiempo real
+- socket.io para chat en tiempo real
+- jsonwebtoken para tokens de chat
+
+## Dependencias
+
+Las dependencias del proyecto están definidas en `package.json`:
+
+- `bcrypt`
+- `dotenv`
+- `express`
+- `express-session`
+- `jsonwebtoken`
+- `mongoose`
+- `pug`
+- `socket.io`
 
 ## Estructura del proyecto
 
@@ -21,38 +35,32 @@ Backend desarrollado en Node.js con Express y MongoDB para gestionar una panific
 - `controllers/`: lógica de negocio y manipuladores CRUD.
 - `models/`: esquemas de Mongoose para cada colección.
 - `middleware/`: autenticación, autorización y manejo de errores.
-- `views/`: plantillas Pug para las páginas.
+- `views/`: plantillas Pug.
 - `public/`: archivos estáticos.
 - `scripts/`: utilidades de seed y limpieza de sucursales.
 - `utils/`: utilidades generales como generación de IDs.
 
 ## Requisitos
 
-- Node.js 18+ instalado
+- Node.js 18 o superior
 - MongoDB local o Atlas
 
 ## Configuración
 
-1. Definir variables de entorno en un archivo `.env` o directamente en el entorno:
+1. Crear un archivo `.env` en la raíz del proyecto.
+2. Copiar el contenido de `.env.example` o usar el siguiente ejemplo:
 
 ```env
-MONGO_URI=<tu_uri_de_mongodb>
-# Alternativa compatible:
-# MONGODB_URI=<tu_uri_de_mongodb>
+MONGO_URI="mongodb+srv://guinovillo_db_user:tg4mN0VYiuoXMQJN@cluster0.3zfs7s5.mongodb.net/panificadora_db?retryWrites=true&w=majority"
+PORT=3000
+JWT_SECRET="panaderia_espiga_de_oro"
 ```
 
-2. Instalar dependencias:
+3. Instalar dependencias:
 
 ```bash
 npm install
 ```
-
-## Scripts disponibles
-
-- `npm start` — iniciar el servidor en producción.
-- `npm run dev` — iniciar en modo observación con `node --watch`.
-- `npm run seed:sucursales` — cargar sucursales de ejemplo.
-- `npm run clean:sucursales` — eliminar sucursales de prueba.
 
 ## Ejecutar la aplicación
 
@@ -60,7 +68,38 @@ npm install
 npm run dev
 ```
 
-Abrir `http://localhost:3000` en el navegador.
+O en modo producción:
+
+```bash
+npm start
+```
+
+Luego abrir `http://localhost:3000` en el navegador.
+
+## Cuentas de usuario de prueba
+
+Usa estas credenciales para ingresar al sistema:
+
+- **Admin**
+  - Email: `admin@espigadeoro.com`
+  - Contraseña: `admin123`
+
+- **Franquicia**
+  - Email: `franquiciado@espigadeoro.com`
+  - Contraseña: `franquicia123`
+
+- **Sucursal**
+  - Email: `colon-1234@espigadeoro.com`
+  - Contraseña: `Sucursal123`
+
+> Estas cuentas se usan en el proyecto escolar como ejemplos de acceso.
+
+## Scripts disponibles
+
+- `npm start` — iniciar el servidor en producción.
+- `npm run dev` — iniciar en modo observación con `node --watch`.
+- `npm run seed:sucursales` — cargar sucursales de ejemplo.
+- `npm run clean:sucursales` — eliminar sucursales de prueba.
 
 ## Rutas principales
 
@@ -149,5 +188,7 @@ Abrir `http://localhost:3000` en el navegador.
 
 - El proyecto usa IDs autoincrementales para entidades como productos y pedidos.
 - La autorización se maneja con sesiones y middleware de roles.
-- `config/db.js` usa `MONGO_URI` o `MONGODB_URI`; si no hay variable, intenta conectar a `mongodb://127.0.0.1:27017/panificadora_db`.
+- Para el servidor educativo, no dependas de una base de datos local. Define `MONGO_URI` apuntando a la base de datos remota o accesible desde el servidor.
+- Si el servidor sólo accede a MongoDB desde la red de la escuela, usa la URI remota proporcionada por el entorno educativo.
+- `JWT_SECRET` es obligatorio en `.env` para que la generación de tokens de chat funcione. En este proyecto escolar está bien usar una clave sencilla.
 
