@@ -151,9 +151,3 @@ Abrir `http://localhost:3000` en el navegador.
 - La autorización se maneja con sesiones y middleware de roles.
 - `config/db.js` usa `MONGO_URI` o `MONGODB_URI`; si no hay variable, intenta conectar a `mongodb://127.0.0.1:27017/panificadora_db`.
 
-## Recomendaciones
-
-- Agregar pruebas unitarias y de integración.
-- Extender el manejo de errores y validaciones.
-- Añadir documentación de roles y usuarios iniciales.
-- Usar HTTPS y `secure` cookies en producción.
