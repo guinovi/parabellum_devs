@@ -2,8 +2,7 @@ import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { processMessage, getHelpMessage } from './chatbot.js';
 
-const JWT_SECRET = 'parabellum-chat-jwt-secret';
-
+const getJwtSecret = () => process.env.JWT_SECRET || 'parabellum-chat-jwt-secret';
 export function initSocket(server) {
     const io = new Server(server, {
         cors: { origin: '*' }
@@ -17,7 +16,7 @@ export function initSocket(server) {
             return next(new Error('Token de autenticación requerido'));
         }
         try {
-            const decoded = jwt.verify(token, JWT_SECRET);
+            const decoded = jwt.verify(token, getJwtSecret());
             socket.user = decoded;
             next();
         } catch (err) {

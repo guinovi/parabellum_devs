@@ -8,6 +8,12 @@ export const getChatToken = (req, res) => {
         return res.status(401).json({ error: 'No autenticado' });
     }
 
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+        console.error('ERROR CRÍTICO: JWT_SECRET no está definido en .env');
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+
     const usuario = req.session.usuario;
 
     const token = jwt.sign(
