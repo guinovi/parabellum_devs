@@ -1,84 +1,91 @@
 import Producto from "../models/Producto.js";
 import { getNextProductoId } from "../utils/idGenerator.js";
 
+//Tipos de productos
+const TIPOS_PRODUCTOS = {
+    'Producto terminado': [
+        'Panadería dulce',
+        'Panes',
+        'Masas finas',
+        'Tortas,tartas y postres',
+        'Sandwiches',
+    ],
+    'Producto congelado': [
+        'Panadería dulce',
+        'Panes',
+    ]
+};
+
 //Crear producto
-
-export const createProducto = async (req, res) => {
+export const createProducto = async (req, res, next) => {
     try {
-        const { nombre, precio, tipo, activo } = req.body;
+        const { nombre, precio, categoria, subcategoria, activo } = req.body;
 
-        // convertir checkbox a true/false
         const activoBoolean = activo === 'on';
 
-        //validamos
-        if (!nombre || !precio || !tipo) {
-            return res.status(400).json({ error: "Faltan datos obligatorios" })
+        if (!nombre || !precio || !categoria || !subcategoria) {
+            return res.status(400).json({ error: "Faltan datos obligatorios" });
         }
 
-        // Obtener siguiente ID autoincremental
         const nuevoId = await getNextProductoId();
-
-        //usamos Mongoose para crear el producto en la base de datos
 
         await Producto.create({
             id: nuevoId,
             nombre,
             precio: Number(precio),
-            tipo,
+            categoria,
+            subcategoria,
+            unidad,
             activo: activoBoolean
         });
 
-        // volver a la lista de productos
         res.redirect('/productos');
-
     } catch (error) {
-        console.log("ATENCIÓN, EL ERROR REAL ES:", error);
-        res.status(500).send({ error: "Error al crear el producto" });
-    };
-}
-
-export const formularioNuevoProducto = (req, res) => {
-    res.render('nuevoProducto');
+        next(error);
+    }
 };
 
-export const formularioEditarProducto = async (req, res) => {
+
+export const formularioNuevoProducto = (req, res) => {
+    res.render('nuevoProducto', { tipos: TIPOS_PRODUCTOS });
+};
+
+export const formularioEditarProducto = async (req, res, next) => {
     try {
-        const producto = await Producto.findOne({
-            id: Number(req.params.id)
-        });
+        const producto = await Producto.findOne({ id: Number(req.params.id) });
         if (!producto) {
             return res.status(404).send('Producto no encontrado');
         }
-        res.render('editarProducto', { producto });
+        res.render('editarProducto', { producto, tipos: TIPOS_PRODUCTOS });
     } catch (error) {
-        res.status(500).send('Error al cargar producto');
+        next(error);
     }
 };
 
 //leer todos(JSON)
-export const getProductos = async (req, res) => {
+export const getProductos = async (req, res, next) => {
     try {
         const productos = await Producto.find({ activo: true }); //busca los activos en la BD
         res.status(200).json(productos);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener los productos" });
+        next(error);
     }
 };
 
 //leer todos(HTML)
-export const getProductosVista = async (req, res) => {
+export const getProductosVista = async (req, res, next) => {
     try {
         const productos = await Producto.find({ activo: true });
         res.render('listaProductos', { productos });
 
     } catch (error) {
-        res.status(500).send({ error: "Error al obtener los productos" });
+        next(error);
     }
 };
 
 //leer por ID
 
-export const getProductoById = async (req, res) => {
+export const getProductoById = async (req, res, next) => {
     try {
         const producto = await Producto.findOne({ id: Number(req.params.id), activo: true });
         if (!producto) {
@@ -86,34 +93,34 @@ export const getProductoById = async (req, res) => {
         }
         res.status(200).json(producto);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener el producto" });
+        next(error);
     }
 };
 
 //actualizar datos
 
-export const updateProducto = async (req, res) => {
+export const updateProducto = async (req, res, next) => {
     try {
         const actualizado = await Producto.findOneAndUpdate(
             { id: Number(req.params.id)}, //busca por ID y activo
-            req.body, 
+            req.body,
             { new: true } //devuelve el documento actualizado
         );
         if (!actualizado) {
-            return res.status(404).json({ error: "Producto no encontrado o inactivo" });    
+            return res.status(404).json({ error: "Producto no encontrado o inactivo" });
         }
         res.status(200).json({ mensaje: "Actualizado correctamente", data: actualizado });
     } catch (error) {
-        res.status(500).json({ error: "Error interno al actualizar el producto" });
+        next(error);
     }
 };
 
 //borrar dato
 
-export const deleteProducto = async (req, res) => {
+export const deleteProducto = async (req, res, next) => {
     try {
         const borrado = await Producto.findOneAndUpdate(
-            { id: Number(req.params.id)}, //busca por ID 
+            { id: Number(req.params.id)}, //busca por ID
             { activo: false }, //desactiva el producto en lugar de eliminarlo
             { new: true } //devuelve el documento actualizado
         );
@@ -123,6 +130,6 @@ export const deleteProducto = async (req, res) => {
         }
         res.status(200).json({ mensaje: "Producto desactivado correctamente", data: borrado });
     } catch (error) {
-        res.status(500).json({ error: "Error interno al eliminar el producto" });
+        next(error);
     }
 };

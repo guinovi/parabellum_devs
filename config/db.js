@@ -6,7 +6,7 @@ const conectarDB = async () => {
     const mongoLocal = 'mongodb://127.0.0.1:27017/panificadora_db';
 
     const mongoUri = mongoUriAtlas;
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri, { writeConcern: { w: 'majority' } });
 
     if (process.env.MONGO_URI || process.env.MONGODB_URI) {
       console.log('Conexion a MongoDB (URI desde variables de entorno) exitosa');

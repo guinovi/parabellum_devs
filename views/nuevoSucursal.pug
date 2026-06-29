@@ -1,0 +1,50 @@
+extends layout
+
+block content
+    section.page-hero
+        p.eyebrow Sucursales
+        h1 Nueva sucursal
+        p Registrá una unidad operativa de La Espiga de Oro.
+
+    form.form-card(method='POST', action='/sucursales')
+        .form-grid
+            .form-group
+                label(for='nombre') Nombre de Sucursal
+                input#nombre(type='text', name='nombre', required, placeholder='Ej. Sucursal Gral. Paz')
+            .form-group
+                label(for='tipo') Tipo
+                select#tipo(name='tipo', required)
+                    option(value='propia') Propia
+                    option(value='franquicia') Franquicia
+            .form-group.full
+                label(for='direccion') Dirección
+                input#direccion(type='text', name='direccion', required, placeholder='Calle y altura')
+            .form-group
+                label(for='alias') Alias
+                input#alias(type='text', name='alias', required, placeholder='Ej. gral-paz')
+            .form-group
+                label(for='ciudad') Ciudad
+                input#ciudad(type='text', name='ciudad' value='Córdoba')
+            .form-group
+                label(for='provincia') Provincia
+                input#provincia(type='text', name='provincia' value='Córdoba')
+            .form-group
+                label(for='telefono') Teléfono
+                input#telefono(type='text', name='telefono', placeholder='Ej. 3511234567')
+            .form-group
+                label(for='email') Correo Electrónico
+                input#email(type='email', name='email', placeholder='sucursal@laespigadeoro.com')
+            .form-group
+                label(for='responsable') Nombre del Responsable
+                input#responsable(type='text', name='responsable', placeholder='Nombre y apellido')
+            .form-group.checkbox-group.full
+                input#activo(type='checkbox', name='activo' checked)
+                label(for='activo' style="margin: 0; cursor: pointer;") Sucursal activa / operativa
+
+        .actions(style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;")
+            button.btn-primary(type='submit')
+                svg(xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--surface)")
+                    path(d="M5 12h14")
+                    path(d="M12 5v14")
+                span Crear sucursal
+            a.btn.btn-secondary(href='/sucursales') Cancelar

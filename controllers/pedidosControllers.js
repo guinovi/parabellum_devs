@@ -1,42 +1,88 @@
-import Pedido from "../models/Pedido.js";
+import Pedido, { ESTADOS_VALIDOS } from "../models/Pedido.js";
 import Producto from "../models/Producto.js";
 import { getNextPedidoId } from "../utils/idGenerator.js";
+import { descontarStock } from "./stockControllers.js";  // ← agregar
 
+// Estados para las transiciones de los pedidos
+const TRANSICIONES = {
+    'pendiente': 'en producción',
+    'en producción': 'despachado',
+    'despachado': 'entregado',
+    'entregado': null
+};
+
+// Mapeo de estado a campo de fecha
+const FECHAS_ESTADO = {
+    'en producción': 'fechaProduccion',
+    'despachado': 'fechaDespacho',
+    'entregado': 'fechaEntrega'
+};
 
 // Leer todos los pedidos (JSON)
-export const getPedidos = async (req, res) => {
+export const getPedidos = async (req, res, next) => {
     try {
-        const pedidos = await Pedido.getTodos();
+        const pedidos = await Pedido.find().sort({ id: 1 });
         res.status(200).json(pedidos);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener los pedidos" });
+        next(error);
     }
-
 };
 
 // Leer todos los pedidos (HTML)
-export const getPedidosVista = async (req, res) => {
+export const getPedidosVista = async (req, res, next) => {
     try {
-        const pedidos =  await Pedido.find();
+        const usuario = req.session.usuario;
+
+        const filtro = usuario.rol === 'admin'
+            ? {}
+            : { creadoPor: usuario.alias };
+
+        const pedidos = await Pedido.find(filtro).sort({ id: 1 });
         res.render('listaPedidos', { pedidos });
     } catch (error) {
-        res.status(500).send({ error: "Error al obtener los pedidos" });
+        next(error);
     }
 };
 
 // Formulario para crear nuevo pedido
-export const formularioNuevoPedido = async (req, res) => {
+export const formularioNuevoPedido = async (req, res, next) => {
     try {
-        const productos = await Producto.find({ activo: true }); //Buscamos directamente los productos activos
-        const fechaHoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-        res.render('nuevoPedido', { productos, fechaHoy });
+        const productos = await Producto.find({ activo: true });
+        const fechaHoy = new Date().toISOString().split('T')[0];
+
+        const Stock = (await import('../models/Stock.js')).default;
+        const stocks = await Stock.find();
+        const stockMap = {};
+        stocks.forEach(s => {
+            stockMap[s.producto] = {
+                cantidad: s.cantidad,
+                minimo: s.stockMinimo,
+                unidad: s.unidad
+            };
+        });
+
+        res.render('nuevoPedido', { productos, fechaHoy, stockMap });
     } catch (error) {
-        res.status(500).send("Error a cargar el formulario");
+        next(error);
+    }
+};
+
+// Formulario para editar un pedido
+export const formularioEditarPedido = async (req, res, next) => {
+    try {
+        const pedido = await Pedido.findOne({ id: Number(req.params.id) });
+        if (!pedido) {
+            return res.status(404).json({ error: "Pedido no encontrado" }); // o render error
+        }
+        const productos = await Producto.find({ activo: true });
+        res.render('editarPedidos', { pedido, productos });
+    } catch (error) {
+        next(error);
     }
 };
 
 // Leer un pedido por ID
-export const getPedidoById = async (req, res) => {
+export const getPedidoById = async (req, res, next) => {
     try {
         const pedido = await Pedido.findOne({ id: Number(req.params.id) });
         if (!pedido) {
@@ -44,31 +90,24 @@ export const getPedidoById = async (req, res) => {
         }
         res.status(200).json(pedido);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener el pedido" });
+        next(error);
     }
 };
 
 // Crear un nuevo pedido
-export const createPedido = async (req, res) => {
+export const createPedido = async (req, res, next) => {
     try {
         const { fecha } = req.body;
         let productos = [];
 
-        // Validaciones básicas
         if (!fecha) {
             return res.status(400).send("Faltan datos obligatorios: fecha");
         }
 
-        // Si viene desde Thunder Client (JSON)
         if (req.body.productos) {
             productos = req.body.productos;
-        }
-
-        else {
-
-            // Construir array de productos desde los campos del formulario
+        } else {
             const productosDB = await Producto.find({ activo: true });
-
             for (let producto of productosDB) {
                 const cantidad = req.body[`cantidad_${producto.id}`];
                 if (cantidad && Number(cantidad) > 0) {
@@ -80,36 +119,39 @@ export const createPedido = async (req, res) => {
             }
         }
 
-        // Validar que haya al menos un producto
         if (productos.length === 0) {
             return res.status(400).send("Debe seleccionar al menos un producto");
         }
 
-        // Obtener siguiente ID autoincremental
+        // Validar y descontar stock antes de crear el pedido
+        try {
+            await descontarStock(productos);
+        } catch (stockError) {
+            return res.status(400).send(stockError.message);
+        }
+
         const nuevoId = await getNextPedidoId();
 
-        //guardamos en mongo db
         await Pedido.create({
             id: nuevoId,
             productos,
-            fecha
+            fecha,
+            creadoPor: req.session.usuario.alias,
+            fechaCreacion: new Date()
         });
 
-        // Redirigir a la lista de pedidos
         res.redirect('/pedidos');
 
     } catch (error) {
-        console.log("ATENCIÓN, EL ERROR REAL ES:", error);
-        res.status(500).send("Error al crear el pedido");
+        next(error);
     }
 };
 
 // Actualizar un pedido
-export const updatePedido = async (req, res) => {
+export const updatePedido = async (req, res, next) => {
     try {
         const { productos, fecha } = req.body;
 
-        // Si se actualiza productos, validar que existan
         if (productos) {
             const productosDB = await Producto.find();
             for (let item of productos) {
@@ -132,20 +174,77 @@ export const updatePedido = async (req, res) => {
 
         res.status(200).json({ mensaje: "Pedido actualizado correctamente", data: actualizado });
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el pedido" });
+        next(error);
     }
 };
 
 // Eliminar un pedido
-export const deletePedido = async (req, res) => {
+export const deletePedido = async (req, res, next) => {
     try {
-        const borrado =  await Pedido.findOneAndDelete({ id: Number(req.params.id) });
+        const borrado = await Pedido.findOneAndDelete({ id: Number(req.params.id) });
 
         if (!borrado) {
             return res.status(404).json({ error: "Pedido no encontrado" });
         }
         res.status(200).json({ mensaje: "Pedido eliminado correctamente" });
     } catch (error) {
-        res.status(500).json({ error: "Error al eliminar el pedido" });
+        next(error);
+    }
+};
+
+// Cambio de estado en los pedidos
+export const actualizarEstadoPedido = async (req, res, next) => {
+    const { estado } = req.body;
+
+    if (!ESTADOS_VALIDOS.includes(estado)) {
+        return res.status(400).json({
+            error: `Estado inválido. Los permitidos son: ${ESTADOS_VALIDOS.join(', ')}`
+        });
+    }
+
+    try {
+        const pedido = await Pedido.findOne({ id: Number(req.params.id) });
+
+        if (!pedido) {
+            return res.status(404).json({ error: "Pedido no encontrado" });
+        }
+
+        const siguienteEstado = TRANSICIONES[pedido.estado];
+
+        if (siguienteEstado === undefined) {
+            return res.status(400).json({ error: `El estado actual '${pedido.estado}' no es válido.` });
+        }
+
+        if (siguienteEstado === null) {
+            return res.status(400).json({ error: "El pedido ya fue entregado, no puede cambiar de estado." });
+        }
+
+        if (siguienteEstado !== estado) {
+            return res.status(400).json({
+                error: `Transición inválida: '${pedido.estado}' → '${estado}'. El siguiente estado permitido es '${siguienteEstado}'.`
+            });
+        }
+
+        pedido.estado = estado;
+        if (FECHAS_ESTADO[estado]) {
+            pedido[FECHAS_ESTADO[estado]] = new Date();
+        }
+        await pedido.save();
+
+        // Generar facturación interna o royalty al entregar el pedido
+        if (estado === 'entregado') {
+            try {
+                const { generarFacturacionParaPedido } = await import("./facturacionControllers.js");
+                await generarFacturacionParaPedido(pedido);
+            } catch (facError) {
+                console.error("Error al generar la facturación:", facError);
+            }
+        }
+
+        res.status(200).json({ mensaje: "Estado actualizado correctamente", data: pedido });
+
+
+    } catch (error) {
+        next(error);
     }
 };

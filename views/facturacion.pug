@@ -1,0 +1,55 @@
+extends layout
+
+block content
+    section.page-hero
+        p.eyebrow Finanzas
+        h1 Facturación y Royalties
+        p Registro financiero consolidado de facturación interna (sucursales propias) y cálculo de royalties (franquicias).
+
+    .card-grid
+        .card
+            .card-icon-wrapper
+                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                    line(x1="12" y1="1" x2="12" y2="23")
+                    path(d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6")
+            strong $#{totalFacturadoInterno.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            span Facturación Interna Total (Propias)
+        
+        .card
+            .card-icon-wrapper
+                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round")
+                    path(d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6")
+            strong $#{totalRoyalties.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            span Royalties Totales Acumulados (Franquicias)
+
+    .table-wrapper
+        table
+            thead
+                tr
+                    th ID Comprobante
+                    th ID Pedido
+                    th Sucursal (Alias)
+                    th Tipo Sucursal
+                    th Tipo Registro
+                    th Monto Pedido
+                    th Royalty %
+                    th Monto Liquidado
+                    th Fecha de Emisión
+            tbody
+                each registro in registros
+                    tr
+                        td(data-label="ID Comprobante") #{registro.id}
+                        td(data-label="ID Pedido") #{registro.pedidoId}
+                        td(data-label="Sucursal") #{registro.aliasSucursal}
+                        td(data-label="Tipo Sucursal")
+                            span.badge(class=`badge-${registro.tipoSucursal}`) #{registro.tipoSucursal}
+                        td(data-label="Tipo Registro")
+                            span.badge(class=`badge-${registro.tipoRegistro === 'factura_interna' ? 'propia' : 'franquicia'}`) #{registro.tipoRegistro === 'factura_interna' ? 'Factura Interna' : 'Royalty'}
+                        td(data-label="Monto Pedido") $#{registro.montoTotalPedido.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        td(data-label="Royalty %") #{registro.porcentajeRoyalty > 0 ? registro.porcentajeRoyalty + '%' : '—'}
+                        td(data-label="Monto Liquidado")
+                            strong $#{registro.montoCalculado.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        td(data-label="Fecha") #{new Date(registro.fechaEmision).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                else
+                    tr
+                        td.empty-state(colspan='9') No se registran facturas ni royalties procesados todavía.

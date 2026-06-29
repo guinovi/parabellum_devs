@@ -10,7 +10,7 @@ export const formularioLogin = (req, res) => {
 };
 
 // Procesar login
-export const loginUsuario = async (req, res) => {
+export const loginUsuario = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -40,22 +40,22 @@ export const loginUsuario = async (req, res) => {
         req.session.usuario = {
             email: usuario.email,
             nombre: usuario.nombre,
-            rol: usuario.rol
+            rol: usuario.rol,
+            alias: usuario.alias || null
         };
 
         res.redirect('/');
 
     } catch (error) {
-        console.log("ATENCIÓN, EL ERROR REAL ES:", error);
-        res.status(500).render('login', { error: "Error interno del servidor" });
+        next(error);
     }
 };
 
 // Cerrar sesión
-export const logoutUsuario = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.log("Error al cerrar sesión:", err);
+export const logoutUsuario = (req, res, next) => {
+    req.session.destroy((error) => {
+        if (error) {
+            return next(error);
         }
         res.clearCookie('connect.sid');
         res.redirect('/login');

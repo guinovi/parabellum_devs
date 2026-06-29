@@ -1,22 +1,28 @@
 extends layout
 
 block content
-    h2 Iniciar Sesión
+    .login-card-container
+        .login-card
+            .brand
+                .brand-mark LE
+                .brand-info
+                    h1.brand-title La Espiga de Oro
+                    p.brand-subtitle Panel de gestión interno
 
-    if error
-        p(style='color: red;') #{error}
+            if error
+                .alert
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18")
+                        circle(cx="12" cy="12" r="10")
+                        line(x1="12" x2="12" y1="8" y2="12")
+                        line(x1="12" x2="12.01" y1="16" y2="16")
+                    span #{error}
 
-    form(method='POST', action='/login')
-        label Email:
-        input(type='email', name='email', required)
-
-        br
-        br
-
-        label Contraseña:
-        input(type='password', name='password', required)
-
-        br
-        br
-
-        button(type='submit') Ingresar
+            form(method='POST', action='/login')
+                .form-group(style="margin-bottom: 1.25rem")
+                    label(for='email') Email
+                    input#email(type='email', name='email', required, placeholder='nombre@correo.com')
+                .form-group(style="margin-bottom: 2rem")
+                    label(for='password') Contraseña
+                    input#password(type='password', name='password', required, placeholder='••••••••')
+                .actions
+                    button.btn-primary(type='submit' style="width: 100%") Ingresar

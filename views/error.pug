@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    section.page-header
+        .page-title-group
+            p.eyebrow Error #{statusCode}
+            h2 Algo no salió como esperábamos
+            p #{message}
+
+    .empty-state
+        p Si estabas navegando el sistema, volvé al inicio e intentá nuevamente.
+        a.btn.btn-primary(href='/') Volver al inicio
