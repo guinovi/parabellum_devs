@@ -51,7 +51,7 @@ Las dependencias del proyecto están definidas en `package.json`:
 2. Copiar el contenido de `.env.example` o usar el siguiente ejemplo:
 
 ```env
-MONGO_URI="mongodb+srv://guinovillo_db_user:tg4mN0VYiuoXMQJN@cluster0.3zfs7s5.mongodb.net/panificadora_db?retryWrites=true&w=majority"
+MONGO_URI="mongodb+srv://guinovillo_db_user:###@cluster0.###.mongodb.net/panificadora_db?retryWrites=true&w=majority"
 PORT=3000
 JWT_SECRET="panaderia_espiga_de_oro"
 ```
